@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Регистрация</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    body, html {
+        height: 100%;
+        font-family: 'Montserrat', sans-serif;
+    }
+
+    header {
+        background-color: #ffffff;
+        padding: 10px 20px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .navbar-left, .navbar-right {
+        list-style: none;
+        display: flex;
+        gap: 30px;
+    }
+
+    .navbar-left a, .navbar-right a {
+        text-decoration: none;
+        color: #5c5c5c;
+        padding: 10px 20px;
+        border-radius: 5px;
+        font-weight: 500;
+        transition: background-color 0.3s, color 0.3s;
+    }
+
+    .navbar-left a:hover, .navbar-right a:hover {
+        background-color: #a85ac2;
+        color: #fff;
+    }
+
+    .navbar-center h1 {
+        margin: 0;
+        font-size: 2.5em;
+        background: linear-gradient(45deg, #000000, #a85ac2);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-weight: bold;
+        letter-spacing: 1px;
+    }
+
+    .container {
+        display: flex;
+        width: 100%;
+        height: calc(100vh - 60px); /* 100vh минус высота навигации */
+    }
+
+    .left-half {
+        width: 50%;
+        background: url('photosss/salin.jpg') center center/cover no-repeat;
+        position: relative;
+    }
+
+    .left-half::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.6); /* Полупрозрачный фильтр */
+    }
+
+    .right-half {
+        width: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #f0f0f0;
+    }
+
+    .register-box {
+        width: 80%;
+        max-width: 400px;
+        background-color: #ffffff;
+        padding: 40px;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+
+    .register-box h1 {
+        font-size: 1.75em;
+        margin-bottom: 20px;
+        color: #333;
+        background: linear-gradient(45deg, #a85ac2, #2d2d2d);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .input-field {
+        width: 100%;
+        margin-bottom: 20px;
+        padding: 12px 15px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 1em;
+        background-color: #f7f7f7;
+        transition: border-color 0.3s;
+    }
+
+    .input-field:focus {
+        border-color: #a85ac2;
+        outline: none;
+    }
+
+    .register-button {
+        width: 100%;
+        padding: 15px;
+        background-color: #a85ac2;
+        border: none;
+        border-radius: 5px;
+        color: white;
+        font-size: 1.1em;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .register-button:hover {
+        background-color: #8b49a5;
+    }
+
+    .register-box p {
+        margin-top: 20px;
+        font-size: 0.9em;
+        color: #666;
+    }
+
+    .register-box p a {
+        color: #a85ac2;
+        text-decoration: none;
+        transition: color 0.3s;
+    }
+
+    .register-box p a:hover {
+        color: #2d2d2d;
+    }
+
+  </style>
+</head>
+<body>
+  <header>
+    <nav class="navbar">
+      <li><a th:href="@{/MainPage}">Главная</a></li>
+      <li><a th:href="@{/about-us}">О нас</a></li>
+      <li><a th:href="@{/contacts}">Контакты</a></li>
+      <li><a th:href="@{/login}">Войти</a></li>
+      <li><a th:href="@{/register}">Зарегистрироваться</a></li>
+    </nav>
+  </header>
+
+  <div class="container">
+    <div class="left-half"></div>
+    <div class="right-half">
+      <div class="register-box">
+        <h1>Зарегистрироваться</h1>
+        <form id="registrationForm" th:action="@{/register}" method="post">
+          <input type="text" class="input-field" placeholder="Имя" name="name" required>
+          <input type="number" class="input-field" placeholder="Номер телефона" name="phone" required>
+          <input type="email" class="input-field" placeholder="Email" name="email" required>
+          <input type="password" class="input-field" placeholder="Пароль" name="password" required>
+          <button type="submit" class="register-button">Зарегистрироваться</button>
+        </form>
+        <p>Уже есть аккаунт? <a href="login.html">Войти</a></p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

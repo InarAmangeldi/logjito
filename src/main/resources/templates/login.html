@@ -1,6 +1,8 @@
 <!DOCTYPE html>
-<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <style>
         * {
@@ -178,14 +180,14 @@
             <div class="login-box">
                 <h1>Войти</h1>
                 <form th:action="@{/login}" method="post">
-                    <label for="username">Username:</label>
-                    <input type="text" id="username" name="username" required>
-                    <label for="password">Password:</label>
-                    <input type="password" id="password" name="password" required>
-                    <button type="submit">Login</button>
+                    <input type="text" id="email" name="email" class="input-field" placeholder="Email" required>
+                    <input type="password" id="password" name="password" class="input-field" placeholder="Пароль" required>
+                    <button type="submit" class="login-button">Войти</button>
                 </form>
-                <button class="login-button">Войти</button>
-                <p>Нет аккаунта? <a href="Registration.html">Зарегистрироваться</a></p>
+                <div th:if="${error}" style="color: red; margin-bottom: 20px;">
+                    <p th:text="${error}"></p>
+                </div>
+                <p>Нет аккаунта? <a href="register.html">Зарегистрироваться</a></p>
             </div>
         </div>
     </div>

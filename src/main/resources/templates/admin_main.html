@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Администратор - Logjito</title>
+</head>
+<body>
+<header>
+  <h1>Добро пожаловать, Администратор</h1>
+</header>
+
+<main>
+  <h2>Забронированные пользователи</h2>
+  <table>
+    <thead>
+    <tr>
+      <th>ФИО</th>
+      <th>Email</th>
+      <th>Дата бронирования</th>
+      <th>Услуга</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="user : ${users}">
+      <td th:text="${user.name}"></td>
+      <td th:text="${user.email}"></td>
+      <td>Дата бронирования</td> <!-- Добавьте логику отображения -->
+      <td>Услуга</td> <!-- Добавьте логику отображения -->
+    </tr>
+    </tbody>
+  </table>
+</main>
+</body>
+</html>

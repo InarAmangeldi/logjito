@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Подтверждение</title>
+</head>
+<body>
+  <h1>Пользователь успешно зарегистрирован!</h1>
+  <p>Имя: <span th:text="${name}"></span></p>
+  <p>Email: <span th:text="${email}"></span></p>
+  <p>Пароль: <span th:text="${password}"></span></p>
+  <a th:href="@{/}">Вернуться на главную</a>
+</body>
+</html>

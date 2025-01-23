@@ -11,25 +11,21 @@
         padding: 0;
         background-color: #f0f0f0;
     }
-
     header {
         background-color: #ffffff;
         padding: 10px 20px;
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     }
-
     .navbar {
         display: flex;
         justify-content: space-between;
         align-items: center;
     }
-
     .navbar-left, .navbar-right {
         list-style: none;
         display: flex;
         gap: 30px;
     }
-
     .navbar-left a, .navbar-right a {
         text-decoration: none;
         color: #5c5c5c;
@@ -38,12 +34,10 @@
         font-weight: 500;
         transition: background-color 0.3s, color 0.3s;
     }
-
     .navbar-left a:hover, .navbar-right a:hover {
         background-color: #a85ac2;
         color: #fff;
     }
-
     .navbar-center h1 {
         margin: 0;
         font-size: 2.5em;
@@ -53,52 +47,49 @@
         font-weight: bold;
         letter-spacing: 1px;
     }
-
-
     .search-container {
-display: flex;
-align-items: center;
-justify-content: center;
-width: 50%; /* Устанавливает ширину блока */
-background-color: #fff;
-border-radius: 50px;
-padding: 10px 20px;
-box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-width: 50%;
-margin: 20px auto
-}
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 50%; /* Устанавливает ширину блока */
+        background-color: #fff;
+        border-radius: 50px;
+        padding: 10px 20px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        width: 50%;
+        margin: 20px auto
+        }
+        .search-input {
+        flex: 1;
+        border: none;
+        outline: none;
+        font-size: 16px;
+        padding: 10px;
+        border-radius: 50px;
+        background-color: #f2f2f2;
+        transition: background-color 0.3s ease;
+        }
 
-.search-input {
-flex: 1;
-border: none;
-outline: none;
-font-size: 16px;
-padding: 10px;
-border-radius: 50px;
-background-color: #f2f2f2;
-transition: background-color 0.3s ease;
-}
+        .search-input:focus {
+        background-color: #e0e0e0;
+        }
 
-.search-input:focus {
-background-color: #e0e0e0;
-}
+        .search-button {
+        background: none;
+        border: none;
+        cursor: pointer;
+        margin-left: 10px;
+        }
 
-.search-button {
-background: none;
-border: none;
-cursor: pointer;
-margin-left: 10px;
-}
+        .search-icon {
+        width: 20px;
+        height: 20px;
+        filter: invert(40%);
+        }
 
-.search-icon {
-width: 20px;
-height: 20px;
-filter: invert(40%);
-}
-
-.search-button:hover .search-icon {
-filter: invert(20%);
-}
+        .search-button:hover .search-icon {
+        filter: invert(20%);
+        }
 
     .content {
         display: flex;
@@ -112,43 +103,43 @@ filter: invert(20%);
     }
 
     .filters h3 {
-        margin-top: 0;
+      margin-top: 0;
     }
 
     .salons-list {
-display: grid;
-grid-template-columns: repeat(3, 1fr); /* Изменено на 3 колонки */
-gap: 20px;
-width: 100%; /* Убедитесь, что ширина списка салонов занимает 100% */
-margin: 0; /* Убрано авто-центрирование */
-}
+      display: grid;
+      grid-template-columns: repeat(3, 1fr); /* Изменено на 3 колонки */
+      gap: 20px;
+      width: 100%; /* Убедитесь, что ширина списка салонов занимает 100% */
+      margin: 0; /* Убрано авто-центрирование */
+      }
 
-.salon-card {
-background-color: white;
-border-radius: 15px;
-box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-overflow: hidden;
-transition: transform 0.3s, box-shadow 0.3s;
-text-decoration: none; /* Убираем подчеркивание у ссылок */
-height: 300px; /* Задайте высоту для карточек, чтобы они были более однородными */
-}
+      .salon-card {
+      background-color: white;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      transition: transform 0.3s, box-shadow 0.3s;
+      text-decoration: none; /* Убираем подчеркивание у ссылок */
+      height: 300px; /* Задайте высоту для карточек, чтобы они были более однородными */
+      }
 
-.salon-card img {
-width: 100%;
-height: 150px; /* Уменьшена высота изображения */
-object-fit: cover;
-}
+      .salon-card img {
+      width: 100%;
+      height: 150px; /* Уменьшена высота изображения */
+      object-fit: cover;
+      }
 
-.salon-card h2 {
-margin: 10px; /* Уменьшено отступы для заголовка */
-color: #333;
-font-size: 1.25em; /* Уменьшен размер шрифта заголовка */
-}
+      .salon-card h2 {
+      margin: 10px; /* Уменьшено отступы для заголовка */
+      color: #333;
+      font-size: 1.25em; /* Уменьшен размер шрифта заголовка */
+      }
 
-.salon-card p {
-margin: 0 10px 10px; /* Уменьшены отступы для текста */
-color: #777;
-}
+      .salon-card p {
+      margin: 0 10px 10px; /* Уменьшены отступы для текста */
+      color: #777;
+      }
 
 
     .fav-button {
@@ -201,36 +192,36 @@ color: #777;
     }
 
     .filters {
-width: 20%;
-padding: 15px;
-background-color: white;
-border-radius: 15px;
-box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-margin-right: 20px; /* Отступ справа для разделения с контентом */
-}
+      width: 20%;
+      padding: 15px;
+      background-color: white;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      margin-right: 20px; /* Отступ справа для разделения с контентом */
+      }
 
-.filter-checkbox {
-cursor: pointer;
-}
+      .filter-checkbox {
+      cursor: pointer;
+      }
 
-.filter-range {
-width: 100%;
-margin: 10px 0;
-}
+      .filter-range {
+      width: 100%;
+      margin: 10px 0;
+      }
 
-button {
-background-color: #6c467e;
-color: white;
-padding: 10px 15px;
-border: none;
-border-radius: 5px;
-cursor: pointer;
-margin-top: 10px; /* Отступ сверху для кнопки */
-}
+      button {
+      background-color: #6c467e;
+      color: white;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 10px; /* Отступ сверху для кнопки */
+      }
 
-button:hover {
-background-color: #424643;
-}
+      button:hover {
+      background-color: #424643;
+      }
 
   </style>
 </head>

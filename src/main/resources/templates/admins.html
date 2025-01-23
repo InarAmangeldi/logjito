@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Администрирование</title>
+  <style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f8f9fa;
+    }
+    header {
+        text-align: center;
+        padding: 20px;
+        background-color: #343a40;
+        color: white;
+    }
+    main {
+        display: flex;
+        padding: 20px;
+        justify-content: space-between;
+    }
+    .table-container {
+        width: 65%;
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    table th, table td {
+        border: 1px solid #dee2e6;
+        padding: 8px;
+        text-align: left;
+    }
+    table th {
+        background-color: #f1f1f1;
+    }
+    .form-container {
+        width: 30%;
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+    }
+    .form-container h3 {
+        margin-bottom: 15px;
+    }
+    .form-group {
+        margin-bottom: 15px;
+    }
+    .form-group label {
+        display: block;
+        margin-bottom: 5px;
+    }
+    .form-group input {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ced4da;
+        border-radius: 5px;
+    }
+    .form-container button {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    .form-container button:hover {
+        background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Администрирование</h1>
+</header>
+
+<main>
+  <div class="table-container">
+    <table>
+      <thead>
+      <tr>
+        <th>ФИО</th>
+        <th>Номер телефона</th>
+        <th>Email</th>
+        <th>Пароль</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="admin : ${admins}">
+        <td th:text="${admin.name}"></td>
+        <td th:text="${admin.phone}"></td>
+        <td th:text="${admin.email}"></td>
+        <td th:text="${admin.password}"></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="form-container">
+    <h3>Добавить администратора</h3>
+    <form th:action="@{/admins}" method="post">
+      <div class="form-group">
+        <label for="fullName">ФИО</label>
+        <input type="text" id="fullName" name="name" required>
+      </div>
+      <div class="form-group">
+        <label for="phoneNumber">Номер телефона</label>
+        <input type="text" id="phoneNumber" name="phone" required>
+      </div>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required>
+      </div>
+      <div class="form-group">
+        <label for="password">Пароль</label>
+        <input type="password" id="password" name="password" required>
+      </div>
+      <button type="submit">Добавить</button>
+    </form>
+  </div>
+</main>
+</body>
+</html>
