@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>О нас</title>
+    <style>
+        body {
+            font-family: 'Helvetica Neue', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+
+        header {
+            background-color: #fff;
+            padding: 10px 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar-left, .navbar-right {
+            list-style: none;
+            display: flex;
+            gap: 15px;
+        }
+
+        .navbar-left a, .navbar-right a {
+            text-decoration: none;
+            color: #333;
+            padding: 10px 20px;
+            font-weight: bold;
+            transition: color 0.3s, background-color 0.3s;
+        }
+
+        .navbar-left a:hover, .navbar-right a:hover {
+            background-color: #a85ac2;
+            color: white;
+            border-radius: 5px;
+        }
+
+        .navbar-center h1 {
+            margin: 0;
+            font-family: 'Georgia', serif;
+            font-size: 2.5em;
+            background: linear-gradient(45deg, #2d2d2d, #a85ac2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2);
+            font-weight: bold;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+            text-align: center;
+        }
+
+        h2 {
+            font-size: 2.2em;
+            margin-bottom: 10px;
+            color: #2d2d2d;
+            text-transform: uppercase;
+        }
+
+        p {
+            font-size: 1.2em;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+
+        .hero {
+            position: relative;
+            height: 500px;
+            background-image: url('photosss/salonhero.jpg');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+        }
+
+        .hero h2 {
+            font-size: 3em;
+            letter-spacing: 2px;
+        }
+
+        .mission {
+            background-color: #fff;
+            padding: 40px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            margin: 40px 0;
+        }
+
+        .values-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .value-card {
+            background-color: #ffffff;
+            padding: 20px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+            border-radius: 10px;
+            flex: 1;
+            transition: transform 0.3s;
+        }
+
+        .value-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .value-card h3 {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+            color: #2d2d2d;
+        }
+
+        .value-card p {
+            font-size: 1.1em;
+            color: #555;
+        }
+
+        footer {
+            background-color: #2d2d2d;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            margin-top: 40px;
+            font-size: 0.9em;
+        }
+
+        footer p {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <nav class="navbar">
+        <ul class="navbar-left">
+            <li><a href="MainPage.html">Главная</a></li>
+            <li><a href="AboutUs.html">О нас</a></li>
+            <li><a href="Contacts.html">Контакты</a></li>
+        </ul>
+        <div class="navbar-center">
+            <h1>logjito</h1>
+        </div>
+        <ul class="navbar-right">
+            <li><a href="Log-in.html">Войти</a></li>
+            <li><a href="Registration.html">Зарегистрироваться</a></li>
+        </ul>
+    </nav>
+</header>
+
+<div class="hero">
+    <h2>О нас</h2>
+</div>
+
+<div class="container">
+    <section class="mission">
+        <h2>Наша миссия</h2>
+        <p>Мы стремимся предоставить нашим клиентам уникальный опыт, сочетая традиции с современными техниками. Наша команда профессионалов работает, чтобы каждый клиент чувствовал себя особенным и уникальным, вне зависимости от предпочтений и ожиданий.</p>
+    </section>
+
+    <div class="values-container">
+        <div class="value-card">
+            <h3>Качество</h3>
+            <p>Мы верим, что каждая деталь важна. Наши мастера используют только лучшие материалы и инструменты, чтобы обеспечить высокий уровень обслуживания.</p>
+        </div>
+        <div class="value-card">
+            <h3>Уют и комфорт</h3>
+            <p>Мы создали атмосферу, где каждый клиент чувствует себя как дома. Наши салоны - это место, где вы можете расслабиться и насладиться процедурой в полной мере.</p>
+        </div>
+        <div class="value-card">
+            <h3>Инновации</h3>
+            <p>Мы всегда в поиске новых решений и техник, чтобы предлагать нашим клиентам самые современные и эффективные процедуры в мире красоты.</p>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <p>© 2024 logjito. Все права защищены.</p>
+</footer>
+
+</body>
+</html>

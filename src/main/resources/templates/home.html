@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Logjito - Бронирование услуг</title>
+  <style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f0f0f0;
+    }
+
+    header {
+        background-color: #ffffff;
+        padding: 10px 20px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .navbar-left, .navbar-right {
+        list-style: none;
+        display: flex;
+        gap: 30px;
+    }
+
+    .navbar-left a, .navbar-right a {
+        text-decoration: none;
+        color: #5c5c5c;
+        padding: 10px 20px;
+        border-radius: 5px;
+        font-weight: 500;
+        transition: background-color 0.3s, color 0.3s;
+    }
+
+    .navbar-left a:hover, .navbar-right a:hover {
+        background-color: #a85ac2;
+        color: #fff;
+    }
+
+    .navbar-center h1 {
+        margin: 0;
+        font-size: 2.5em;
+        background: linear-gradient(45deg, #000000, #a85ac2);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-weight: bold;
+        letter-spacing: 1px;
+    }
+
+
+    .search-container {
+display: flex;
+align-items: center;
+justify-content: center;
+width: 50%; /* Устанавливает ширину блока */
+background-color: #fff;
+border-radius: 50px;
+padding: 10px 20px;
+box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+width: 50%;
+margin: 20px auto
+}
+
+.search-input {
+flex: 1;
+border: none;
+outline: none;
+font-size: 16px;
+padding: 10px;
+border-radius: 50px;
+background-color: #f2f2f2;
+transition: background-color 0.3s ease;
+}
+
+.search-input:focus {
+background-color: #e0e0e0;
+}
+
+.search-button {
+background: none;
+border: none;
+cursor: pointer;
+margin-left: 10px;
+}
+
+.search-icon {
+width: 20px;
+height: 20px;
+filter: invert(40%);
+}
+
+.search-button:hover .search-icon {
+filter: invert(20%);
+}
+
+    .content {
+        display: flex;
+        justify-content: space-between; /* Изменено с center на space-between */
+        padding: 20px;
+    }
+
+    .filters {
+        width: 20%;
+        padding-right: 20px;
+    }
+
+    .filters h3 {
+        margin-top: 0;
+    }
+
+    .salons-list {
+display: grid;
+grid-template-columns: repeat(3, 1fr); /* Изменено на 3 колонки */
+gap: 20px;
+width: 100%; /* Убедитесь, что ширина списка салонов занимает 100% */
+margin: 0; /* Убрано авто-центрирование */
+}
+
+.salon-card {
+background-color: white;
+border-radius: 15px;
+box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+overflow: hidden;
+transition: transform 0.3s, box-shadow 0.3s;
+text-decoration: none; /* Убираем подчеркивание у ссылок */
+height: 300px; /* Задайте высоту для карточек, чтобы они были более однородными */
+}
+
+.salon-card img {
+width: 100%;
+height: 150px; /* Уменьшена высота изображения */
+object-fit: cover;
+}
+
+.salon-card h2 {
+margin: 10px; /* Уменьшено отступы для заголовка */
+color: #333;
+font-size: 1.25em; /* Уменьшен размер шрифта заголовка */
+}
+
+.salon-card p {
+margin: 0 10px 10px; /* Уменьшены отступы для текста */
+color: #777;
+}
+
+
+    .fav-button {
+        background-color: #763c8a;
+        color: white;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s, transform 0.3s;
+        margin: 0 15px 15px;
+        display: inline-block;
+    }
+
+    .fav-button:hover {
+        background-color: #3f4540;
+        transform: scale(1.05);
+    }
+
+    footer {
+        background-color: #f8f8f8;
+        text-align: center;
+        padding: 10px;
+    }
+
+    .star-icon {
+        width: 20px;
+        height: 20px;
+        margin-right: 5px;
+    }
+
+    .sidebar {
+        width: 20%; /* Ширина колонки */
+        background-color: white;
+        padding: 15px;
+        border-radius: 15px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        margin-left: 20px; /* Отступ от списка салонов */
+    }
+
+    .sidebar h3 {
+        margin-top: 0;
+    }
+
+    .reviews {
+        margin: 10px 0;
+        padding: 10px;
+        background-color: #f9f9f9;
+        border-left: 5px solid #a85ac2; /* Зеленая линия слева */
+    }
+
+    .filters {
+width: 20%;
+padding: 15px;
+background-color: white;
+border-radius: 15px;
+box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+margin-right: 20px; /* Отступ справа для разделения с контентом */
+}
+
+.filter-checkbox {
+cursor: pointer;
+}
+
+.filter-range {
+width: 100%;
+margin: 10px 0;
+}
+
+button {
+background-color: #6c467e;
+color: white;
+padding: 10px 15px;
+border: none;
+border-radius: 5px;
+cursor: pointer;
+margin-top: 10px; /* Отступ сверху для кнопки */
+}
+
+button:hover {
+background-color: #424643;
+}
+
+  </style>
+</head>
+<body>
+<header>
+  <nav class="navbar">
+    <ul class="navbar-left">
+      <li><a href="MainPage.html">Главная</a></li>
+      <li><a href="../../../Desktop/Inar/salon_project/src/main/resources/templates/html/AboutUs.html">О нас</a></li>
+      <li><a href="Contacts.html">Контакты</a></li>
+    </ul>
+    <div class="navbar-center">
+      <h1>logjito</h1>
+    </div>
+    <ul class="navbar-right">
+      <li><a href="Log-in.html">Войти</a></li>
+      <li><a href="Registration.html">Зарегистрироваться</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+  <div class="search-container">
+    <input type="text" placeholder="Поиск салона..." class="search-input">
+    <button class="search-button">
+      <img src="https://cdn-icons-png.flaticon.com/512/622/622669.png" alt="Search" class="search-icon">
+    </button>
+  </div>
+
+  <div class="content">
+    <aside class="filters">
+      <h3>Фильтрация</h3>
+
+      <h4>Услуги</h4>
+      <div>
+        <label><input type="checkbox" name="service" value="manicure" class="filter-checkbox"> Маникюр</label><br>
+        <label><input type="checkbox" name="service" value="haircut" class="filter-checkbox"> Стрижка</label><br>
+        <label><input type="checkbox" name="service" value="massage" class="filter-checkbox"> Массаж</label><br>
+        <label><input type="checkbox" name="service" value="pedicure" class="filter-checkbox"> Педикюр</label><br>
+        <label><input type="checkbox" name="service" value="hairstyle" class="filter-checkbox"> Укладка волос</label><br>
+      </div>
+
+      <h4>Ценовой диапазон</h4>
+      <input type="range" min="0" max="10000" value="5000" class="filter-range" id="priceRange">
+      <span id="priceValue">5000₸</span>
+
+      <h4>Рейтинг</h4>
+      <input type="range" min="0" max="5" value="3" class="filter-range" id="ratingRange">
+      <span id="ratingValue">3⭐</span>
+
+      <button id="applyFilters">Применить фильтры</button>
+    </aside>
+
+
+    <section class="salons-list">
+      <a href="OpenedSalon.html" class="salon-card">
+        <img src="../../../Desktop/Inar/salon_project/src/main/resources/templates/photosss/salonchik.jpg" alt="Salon Photo">
+        <h2>Салон 4</h2>
+        <p>Адрес: Улица 4, Город</p>
+        <button class="fav-button">
+          <img src="../../../Desktop/Inar/salon_project/src/main/resources/templates/photosss/star.png" alt="Star" style="width: 20px; height: 23px; margin-right: 5px;">
+        </button>
+      </a>
+
+      <a href="OpenedSalon.html" class="salon-card">
+        <img src="../../../Desktop/Inar/salon_project/src/main/resources/templates/photosss/salonchik.jpg" alt="Salon Photo">
+        <h2>Салон 4</h2>
+        <p>Адрес: Улица 4, Город</p>
+        <button class="fav-button">
+          <img src="../../../Desktop/Inar/salon_project/src/main/resources/templates/photosss/star.png" alt="Star" style="width: 20px; height: 23px; margin-right: 5px;">
+        </button>
+
+      </a>
+
+      <a href="OpenedSalon.html" class="salon-card">
+        <img src="../../../Desktop/Inar/salon_project/src/main/resources/templates/photosss/salonchik.jpg" alt="Salon Photo">
+        <h2>Салон 4</h2>
+        <p>Адрес: Улица 4, Город</p>
+        <button class="fav-button">
+          <img src="../../../Desktop/Inar/salon_project/src/main/resources/templates/photosss/star.png" alt="Star" style="width: 20px; height: 23px; margin-right: 5px;">
+        </button>
+      </a>
+
+      <a href="OpenedSalon.html" class="salon-card">
+        <img src="../../../Desktop/Inar/salon_project/src/main/resources/templates/photosss/salonchik.jpg" alt="Salon Photo">
+        <h2>Салон 4</h2>
+        <p>Адрес: Улица 4, Город</p>
+        <button class="fav-button">
+          <img src="../../../Desktop/Inar/salon_project/src/main/resources/templates/photosss/star.png" alt="Star" style="width: 20px; height: 23px; margin-right: 5px;">
+        </button>
+      </a>
+
+      <a href="OpenedSalon.html" class="salon-card">
+        <img src="../../../Desktop/Inar/salon_project/src/main/resources/templates/photosss/salonchik.jpg" alt="Salon Photo">
+        <h2>Салон 4</h2>
+        <p>Адрес: Улица 4, Город</p>
+        <button class="fav-button">
+          <img src="../../../Desktop/Inar/salon_project/src/main/resources/templates/photosss/star.png" alt="Star" style="width: 20px; height: 23px; margin-right: 5px;">
+        </button>
+      </a>
+
+      <a href="OpenedSalon.html" class="salon-card">
+        <img src="../../../Desktop/Inar/salon_project/src/main/resources/templates/photosss/salonchik.jpg" alt="Salon Photo">
+        <h2>Салон 4</h2>
+        <p>Адрес: Улица 4, Город</p>
+        <button class="fav-button">
+          <img src="../../../Desktop/Inar/salon_project/src/main/resources/templates/photosss/star.png" alt="Star" style="width: 20px; height: 23px; margin-right: 5px;">
+        </button>
+      </a>
+    </section>
+
+    <aside class="sidebar">
+      <h3>Популярные салоны</h3>
+      <ul>
+        <li>Салон 4</li>
+        <li>Салон 4</li>
+        <li>Салон 4</li>
+        <li>Салон 4</li>
+        <li>Салон 4</li>
+      </ul>
+
+      <h3>Отзывы</h3>
+      <div class="reviews">
+        <p><strong>Иван:</strong> Отличный сервис!</p>
+      </div>
+      <div class="reviews">
+        <p><strong>Мария:</strong> Очень понравилось!</p>
+      </div>
+
+      <h3>События и акции</h3>
+      <ul>
+        <li>Скидка 20% на маникюр в октябре</li>
+        <li>Акция: стрижка + укладка за полцены!</li>
+      </ul>
+    </aside>
+
+  </div>
+</main>
+
+<footer>
+  <p>&copy; 2024 Logjito. Все права защищены.</p>
+</footer>
+</body>
+</html>

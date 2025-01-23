@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Login</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body, html {
+            height: 100%;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        header {
+            background-color: #ffffff;
+            padding: 10px 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar-left, .navbar-right {
+            list-style: none;
+            display: flex;
+            gap: 30px;
+        }
+
+        .navbar-left a, .navbar-right a {
+            text-decoration: none;
+            color: #5c5c5c;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: 500;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .navbar-left a:hover, .navbar-right a:hover {
+            background-color: #a85ac2;
+            color: #fff;
+        }
+
+        .navbar-center h1 {
+            margin: 0;
+            font-size: 2.5em;
+            background: linear-gradient(45deg, #000000, #a85ac2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .container {
+            display: flex;
+            width: 100%;
+            height: calc(100vh - 60px); /* 100vh минус высота навигации */
+        }
+
+        .left-half {
+            width: 50%;
+            background: url('photosss/salin.jpg') center center/cover no-repeat;
+            position: relative;
+        }
+
+        .left-half::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6); /* Полупрозрачный фильтр */
+        }
+
+        .right-half {
+            width: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f0f0f0;
+        }
+
+        .login-box {
+            width: 80%;
+            max-width: 400px;
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .login-box h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            color: #333;
+            background: linear-gradient(45deg, #a85ac2, #2d2d2d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .input-field {
+            width: 100%;
+            margin-bottom: 20px;
+
+            padding: 12px 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1em;
+            background-color: #f7f7f7;
+            transition: border-color 0.3s;
+        }
+
+        .input-field:focus {
+            border-color: #a85ac2;
+            outline: none;
+        }
+
+        .login-button {
+            width: 100%;
+            padding: 15px;
+            background-color: #a85ac2;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .login-button:hover {
+            background-color: #8b49a5;
+        }
+
+        .login-box p {
+            margin-top: 20px;
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .login-box p a {
+            color: #a85ac2;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .login-box p a:hover {
+            color: #2d2d2d;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <ul class="navbar-left">
+                <li><a href="MainPage.html">Главная</a></li>
+                <li><a href="AboutUs.html">О нас</a></li>
+                <li><a href="Contacts.html">Контакты</a></li>
+            </ul>
+            <div class="navbar-center">
+                <h1>logjito</h1>
+            </div>
+            <ul class="navbar-right">
+                <li><a href="Log-in.html">Войти</a></li>
+                <li><a href="Registration.html">Зарегистрироваться</a></li>
+            </ul>
+        </nav>
+    </header>
+    <div class="container">
+        <div class="left-half"></div>
+        <div class="right-half">
+            <div class="login-box">
+                <h1>Войти</h1>
+                <form th:action="@{/login}" method="post">
+                    <label for="username">Username:</label>
+                    <input type="text" id="username" name="username" required>
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" required>
+                    <button type="submit">Login</button>
+                </form>
+                <button class="login-button">Войти</button>
+                <p>Нет аккаунта? <a href="Registration.html">Зарегистрироваться</a></p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
