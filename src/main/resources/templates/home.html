@@ -277,61 +277,18 @@
 
 
     <section class="salons-list">
-      <a href="OpenedSalon.html" class="salon-card">
-        <img src="../../../Desktop/Inar/salon_project/src/main/resources/templates/photosss/salonchik.jpg" alt="Salon Photo">
-        <h2>Салон 4</h2>
-        <p>Адрес: Улица 4, Город</p>
-        <button class="fav-button">
-          <img src="../../../Desktop/Inar/salon_project/src/main/resources/templates/photosss/star.png" alt="Star" style="width: 20px; height: 23px; margin-right: 5px;">
-        </button>
-      </a>
-
-      <a href="OpenedSalon.html" class="salon-card">
-        <img src="../../../Desktop/Inar/salon_project/src/main/resources/templates/photosss/salonchik.jpg" alt="Salon Photo">
-        <h2>Салон 4</h2>
-        <p>Адрес: Улица 4, Город</p>
-        <button class="fav-button">
-          <img src="../../../Desktop/Inar/salon_project/src/main/resources/templates/photosss/star.png" alt="Star" style="width: 20px; height: 23px; margin-right: 5px;">
-        </button>
-
-      </a>
-
-      <a href="OpenedSalon.html" class="salon-card">
-        <img src="../../../Desktop/Inar/salon_project/src/main/resources/templates/photosss/salonchik.jpg" alt="Salon Photo">
-        <h2>Салон 4</h2>
-        <p>Адрес: Улица 4, Город</p>
-        <button class="fav-button">
-          <img src="../../../Desktop/Inar/salon_project/src/main/resources/templates/photosss/star.png" alt="Star" style="width: 20px; height: 23px; margin-right: 5px;">
-        </button>
-      </a>
-
-      <a href="OpenedSalon.html" class="salon-card">
-        <img src="../../../Desktop/Inar/salon_project/src/main/resources/templates/photosss/salonchik.jpg" alt="Salon Photo">
-        <h2>Салон 4</h2>
-        <p>Адрес: Улица 4, Город</p>
-        <button class="fav-button">
-          <img src="../../../Desktop/Inar/salon_project/src/main/resources/templates/photosss/star.png" alt="Star" style="width: 20px; height: 23px; margin-right: 5px;">
-        </button>
-      </a>
-
-      <a href="OpenedSalon.html" class="salon-card">
-        <img src="../../../Desktop/Inar/salon_project/src/main/resources/templates/photosss/salonchik.jpg" alt="Salon Photo">
-        <h2>Салон 4</h2>
-        <p>Адрес: Улица 4, Город</p>
-        <button class="fav-button">
-          <img src="../../../Desktop/Inar/salon_project/src/main/resources/templates/photosss/star.png" alt="Star" style="width: 20px; height: 23px; margin-right: 5px;">
-        </button>
-      </a>
-
-      <a href="OpenedSalon.html" class="salon-card">
-        <img src="../../../Desktop/Inar/salon_project/src/main/resources/templates/photosss/salonchik.jpg" alt="Salon Photo">
-        <h2>Салон 4</h2>
-        <p>Адрес: Улица 4, Город</p>
-        <button class="fav-button">
-          <img src="../../../Desktop/Inar/salon_project/src/main/resources/templates/photosss/star.png" alt="Star" style="width: 20px; height: 23px; margin-right: 5px;">
-        </button>
-      </a>
+      <th:block th:each="salon : ${salons}">
+        <a th:href="@{/salon/{id}(id=${salon.id})}" class="salon-card">
+          <img th:src="${salon.photos[0]?.photoUrl}" alt="Salon Photo">
+          <h2 th:text="${salon.name}">Название салона</h2>
+          <p th:text="${salon.info}">Информация о салоне</p>
+          <button class="fav-button">
+            <img th:src="${salon.photos[0]?.photoUrl ?: '/path/to/placeholder.jpg'}" alt="Salon Photo">
+          </button>
+        </a>
+      </th:block>
     </section>
+
 
     <aside class="sidebar">
       <h3>Популярные салоны</h3>

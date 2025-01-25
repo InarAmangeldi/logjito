@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Изменить данные - Logjito</title>
+  <style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f0f0f0;
+    }
+
+    main {
+        padding: 20px;
+        background-color: #ffffff;
+        margin: 20px auto;
+        width: 80%;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: bold;
+    }
+
+    input[type="text"], textarea {
+        width: 100%;
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    textarea {
+        resize: none;
+        height: 80px;
+    }
+
+    .category-section, .photo-upload-section {
+        margin-top: 20px;
+        padding: 15px;
+        background-color: #f9f9f9;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+
+    .category-item {
+        margin-bottom: 20px;
+    }
+
+    .add-category, .add-service, .btn-save {
+        margin-top: 10px;
+        padding: 10px 15px;
+        background-color: #6c467e;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .add-category:hover, .add-service:hover, .btn-save:hover {
+        background-color: #52335d;
+    }
+
+    .photo-box {
+        width: 150px;
+        height: 150px;
+        background-color: #f9f9f9;
+        border: 2px dashed #ccc;
+        border-radius: 5px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        margin-bottom: 10px;
+    }
+
+    .photo-preview {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+  </style>
+</head>
+<body>
+<main>
+  <h2>Изменить данные</h2>
+  <form action="/save" method="post" enctype="multipart/form-data">
+    <!-- Сохранение информации о салоне -->
+    <div class="form-group">
+      <label for="name">Название салона</label>
+      <input type="text" id="name" name="name" required>
+    </div>
+    <div class="form-group">
+      <label for="info">Дополнительная информация</label>
+      <textarea id="info" name="info" required></textarea>
+    </div>
+
+
+    <!-- Загрузка фотографий -->
+    <div class="photo-upload-section">
+      <h3>Загрузить фотографии</h3>
+      <div id="photoContainer">
+        <div class="photo-box">
+          <input type="file" name="photos" accept="image/*" multiple>
+        </div>
+      </div>
+    </div>
+
+    <!-- Добавление категорий и услуг -->
+    <div class="category-section">
+      <h3>Категории и услуги</h3>
+      <div id="categories-container">
+        <div class="category-item">
+          <input type="text" name="categories[0].name" placeholder="Название категории" required>
+          <div class="service-item">
+            <input type="text" name="categories[0].services[0].name" placeholder="Название услуги" required>
+            <input type="text" name="categories[0].services[0].duration" placeholder="Длительность" required>
+            <input type="text" name="categories[0].services[0].price" placeholder="Цена" required>
+          </div>
+          <button type="button" class="add-service">Добавить услугу</button>
+        </div>
+      </div>
+      <button type="button" class="add-category">Добавить категорию</button>
+    </div>
+
+    <!-- Кнопка сохранения -->
+    <button type="submit" class="btn-save">Сохранить</button>
+  </form>
+</main>
+
+<script>
+  let categoryIndex = 0;
+
+  document.querySelector('.add-category').addEventListener('click', () => {
+    categoryIndex++;
+    const categoryContainer = document.createElement('div');
+    categoryContainer.className = 'category-item';
+    categoryContainer.innerHTML = `
+      <input type="text" name="categories[${categoryIndex}].name" placeholder="Название категории" required>
+      <div class="service-item">
+        <input type="text" name="categories[${categoryIndex}].services[0].name" placeholder="Название услуги" required>
+        <input type="text" name="categories[${categoryIndex}].services[0].duration" placeholder="Длительность" required>
+        <input type="text" name="categories[${categoryIndex}].services[0].price" placeholder="Цена" required>
+      </div>
+      <button type="button" class="add-service">Добавить услугу</button>
+    `;
+    document.getElementById('categories-container').appendChild(categoryContainer);
+
+    const addServiceButton = categoryContainer.querySelector('.add-service');
+    let serviceIndex = 0;
+    addServiceButton.addEventListener('click', () => {
+      serviceIndex++;
+      const serviceItem = document.createElement('div');
+      serviceItem.className = 'service-item';
+      serviceItem.innerHTML = `
+        <input type="text" name="categories[${categoryIndex}].services[${serviceIndex}].name" placeholder="Название услуги" required>
+        <input type="text" name="categories[${categoryIndex}].services[${serviceIndex}].duration" placeholder="Длительность" required>
+        <input type="text" name="categories[${categoryIndex}].services[${serviceIndex}].price" placeholder="Цена" required>
+      `;
+      categoryContainer.appendChild(serviceItem);
+    });
+  });
+
+</script>
+</body>
+</html>

@@ -1,13 +1,19 @@
 package com.example.salon_project.controller;
 
+import com.example.salon_project.model.Salon;
 import com.example.salon_project.model.User;
+import com.example.salon_project.service.SalonService;
 import com.example.salon_project.service.UserService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class UserController {
@@ -51,24 +57,41 @@ public class UserController {
     @PostMapping("/login")
     public String login(@RequestParam String email,
                         @RequestParam String password,
-                        Model model) {
-        User user = userService.findByEmail(email);
-        if (user != null && user.getPassword().equals(password)) {
-            if ("ADMIN".equals(user.getRole())) {
-                return "redirect:/admin_main"; // нужно что бы при нажатии на него переходил на админа
-            } else {
-                return "redirect:/home";
+                        Model model,
+                        HttpSession session
+    ) {
+        Optional<User> optionalUser = userService.findByEmail(email);
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            if (user.getPassword().equals(password)) {
+                if ("ADMIN".equals(user.getRole())) {
+                    session.setAttribute("adminId", user.getId());
+                    return "redirect:/change_salon_page";
+                } else {
+                    session.setAttribute("userId", user.getId());
+                    return "redirect:/home";
+                }
             }
-        } else {
-            model.addAttribute("error", "Неверный email или пароль");
-            return "login";
         }
+        model.addAttribute("error", "Неверный email или пароль");
+        return "login";
     }
 
 
+    @GetMapping("/admin_main")
+    public String showAdminMainPage(Model model) {
+        // Если необходимо передать данные для страницы, сделайте это здесь
+        return "admin_main"; // Имя HTML-шаблона
+    }
+
+
+    @Autowired
+    private SalonService salonService;
 
     @GetMapping("/home")
-    public String showHomePage() {
+    public String showHomePage(Model model) {
+        List<Salon> salons = salonService.getAllSalons();
+        model.addAttribute("salons", salons);
         return "home";
     }
 
