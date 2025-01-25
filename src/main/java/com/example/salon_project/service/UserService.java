@@ -29,7 +29,10 @@ public class UserService {
     }
 
 
-
+    public User findById(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Пользователь с ID " + id + " не найден"));
+    }
 
 
 }

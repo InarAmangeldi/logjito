@@ -229,17 +229,12 @@
 <header>
   <nav class="navbar">
     <ul class="navbar-left">
-      <li><a href="MainPage.html">Главная</a></li>
-      <li><a href="../../../Desktop/Inar/salon_project/src/main/resources/templates/html/AboutUs.html">О нас</a></li>
-      <li><a href="Contacts.html">Контакты</a></li>
+      <li><a href="/home">Главная</a></li>
+      <li><a href="/profile">Личный кабинет</a></li>
     </ul>
     <div class="navbar-center">
       <h1>logjito</h1>
     </div>
-    <ul class="navbar-right">
-      <li><a href="Log-in.html">Войти</a></li>
-      <li><a href="Registration.html">Зарегистрироваться</a></li>
-    </ul>
   </nav>
 </header>
 
@@ -279,15 +274,13 @@
     <section class="salons-list">
       <th:block th:each="salon : ${salons}">
         <a th:href="@{/salon/{id}(id=${salon.id})}" class="salon-card">
-          <img th:src="${salon.photos[0]?.photoUrl}" alt="Salon Photo">
+          <img th:src="${salon.photos[0]?.photoUrl ?: '/uploads/placeholder.jpg'}" alt="Salon Photo">
           <h2 th:text="${salon.name}">Название салона</h2>
           <p th:text="${salon.info}">Информация о салоне</p>
-          <button class="fav-button">
-            <img th:src="${salon.photos[0]?.photoUrl ?: '/path/to/placeholder.jpg'}" alt="Salon Photo">
-          </button>
         </a>
       </th:block>
     </section>
+
 
 
     <aside class="sidebar">

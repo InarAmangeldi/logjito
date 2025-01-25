@@ -1,6 +1,5 @@
 package com.example.salon_project.model;
 
-import com.example.salon_project.request.CategoryRequest;
 import jakarta.persistence.*;
 import java.util.List;
 
@@ -19,12 +18,11 @@ public class Salon {
     @Column(name = "admin_id")
     private Long adminId;
 
-    @Transient // Это временно, так как данные категории не сохраняются в этой таблице
-    private List<CategoryRequest> categories;
+    @OneToMany(mappedBy = "salon", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Category> categories;
 
     @OneToMany(mappedBy = "salon", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Photo> photos;
-
 
     // Getters и Setters
     public Long getId() {
@@ -59,11 +57,11 @@ public class Salon {
         this.adminId = adminId;
     }
 
-    public List<CategoryRequest> getCategories() {
+    public List<Category> getCategories() {
         return categories;
     }
 
-    public void setCategories(List<CategoryRequest> categories) {
+    public void setCategories(List<Category> categories) {
         this.categories = categories;
     }
 

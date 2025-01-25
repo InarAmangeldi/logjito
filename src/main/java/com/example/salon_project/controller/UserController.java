@@ -2,6 +2,7 @@ package com.example.salon_project.controller;
 
 import com.example.salon_project.model.Salon;
 import com.example.salon_project.model.User;
+import com.example.salon_project.request.CategoryRequest;
 import com.example.salon_project.service.SalonService;
 import com.example.salon_project.service.UserService;
 import jakarta.servlet.http.HttpSession;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -94,5 +96,18 @@ public class UserController {
         model.addAttribute("salons", salons);
         return "home";
     }
+
+//    @GetMapping("/salon/{id}")
+//    public String getSalonById(@PathVariable("id") Long id, Model model) {
+//        Salon salon = salonService.findById(id); // Метод для поиска салона по ID
+//        model.addAttribute("salon", salon);
+//        model.addAttribute("mainPhoto", salon.getPhotos().isEmpty() ? "/uploads/placeholder.jpg" : salon.getPhotos().get(0).getPhotoUrl()); // Берем первое фото
+//        return "salon_page"; // Название HTML-шаблона
+//    }
+
+
+
+
+
 
 }

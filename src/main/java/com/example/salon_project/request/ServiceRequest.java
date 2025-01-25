@@ -5,6 +5,8 @@ public class ServiceRequest {
     private String duration;
     private Double price;
 
+
+
     public String getName() {
         return name;
     }

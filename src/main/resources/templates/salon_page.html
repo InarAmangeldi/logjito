@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${salon.name}">Салон</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #fff;
+            padding: 20px 40px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            display: flex;
+            gap: 30px;
+        }
+
+        .carousel-container {
+            flex: 1;
+        }
+
+        .carousel img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+        }
+
+        .mini-images {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        .mini-images img {
+            width: 70px;
+            height: 70px;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: transform 0.2s;
+        }
+
+        .mini-images img:hover {
+            transform: scale(1.1);
+        }
+
+        .salon-info {
+            flex: 1;
+        }
+
+        .salon-info h2 {
+            font-size: 2em;
+            color: #333;
+        }
+
+        .salon-info p {
+            font-size: 1.1em;
+            color: #555;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        ul li {
+            margin: 10px 0;
+        }
+
+        .booking-button {
+            display: inline-block;
+            background-color: #a85ac2;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        .booking-button:hover {
+            background-color: #9149a5;
+        }
+
+        /* Стиль модального окна */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            width: 400px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-content h3 {
+            margin: 0 0 15px;
+            font-size: 1.5em;
+            color: #333;
+        }
+
+        .modal-content label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 1em;
+            color: #555;
+        }
+
+        .modal-content input,
+        .modal-content select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .modal-content button {
+            background-color: #a85ac2;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .modal-content button:hover {
+            background-color: #9149a5;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1 th:text="${salon.name}">Название Салона</h1>
+</header>
+<div class="container">
+    <div class="carousel-container">
+        <div class="carousel">
+            <img th:src="${salon.photos[0]?.photoUrl ?: '/uploads/placeholder.jpg'}" alt="Фото салона" id="salon-image">
+        </div>
+        <div class="mini-images">
+            <img th:each="photo : ${salon.photos}" th:src="${photo.photoUrl}" th:alt="'Фото ' + ${salon.name}" onclick="setImage(this)">
+        </div>
+    </div>
+
+    <div class="salon-info">
+        <h2 th:text="${salon.name}">Название салона</h2>
+        <p><strong>Дополнительная информация:</strong></p>
+        <p th:text="${salon.info}">Тут будет информация о салоне</p>
+
+        <h3>Категории и услуги</h3>
+        <ul>
+            <li th:each="category : ${salon.categories}">
+                <strong th:text="${category.name}">Название категории</strong>
+                <ul>
+                    <li th:each="service : ${category.services}">
+                        <span th:text="${service.name}">Название услуги</span> -
+                        <span th:text="${service.price}">Цена услуги</span>₸
+                    </li>
+                </ul>
+            </li>
+        </ul>
+
+
+        <button class="booking-button" onclick="openBookingForm()">Записаться</button>
+    </div>
+</div>
+
+<div class="modal" id="bookingModal" style="display: none;">
+    <div class="modal-content">
+        <h3>Запись в салон</h3>
+        <form th:action="@{/saveBooking}" method="post">
+            <input type="hidden" name="salonId" th:value="${salon.id}">
+            <label for="clientName">ФИО</label>
+            <input type="text" id="clientName" name="clientName" placeholder="Введите ФИО" required>
+
+            <label for="serviceType">Вид услуги</label>
+            <select id="serviceType" name="serviceId" required>
+                <optgroup th:each="category : ${salon.categories}" th:label="${category.name}">
+                    <option th:each="service : ${category.services}"
+                            th:value="${service.id}"
+                            th:text="${service.name}">
+                    </option>
+                </optgroup>
+            </select>
+
+            <label for="bookingDate">Дата</label>
+            <input type="date" id="bookingDate" name="date" required>
+
+            <label for="bookingTime">Время</label>
+            <select id="bookingTime" name="time" required>
+                <option th:each="time : ${#numbers.sequence(8, 19)}"
+                        th:value="${time}"
+                        th:text="${time + ':00'}"></option>
+            </select>
+
+            <button type="submit">Сохранить</button>
+        </form>
+    </div>
+</div>
+
+
+<script>
+    function setImage(imgElement) {
+        const mainImage = document.getElementById('salon-image');
+        mainImage.src = imgElement.src;
+    }
+
+    function openBookingForm() {
+        document.getElementById('bookingModal').style.display = 'flex';
+    }
+    document.addEventListener('click', function(event) {
+        const modal = document.getElementById('bookingModal');
+        if (event.target === modal) {
+            modal.style.display = 'none';
+        }
+    });
+
+
+</script>
+</body>
+</html>

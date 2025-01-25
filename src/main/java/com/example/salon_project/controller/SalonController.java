@@ -1,20 +1,15 @@
 package com.example.salon_project.controller;
 
-import com.example.salon_project.model.Category;
-import com.example.salon_project.model.Photo;
-import com.example.salon_project.model.Salon;
-import com.example.salon_project.model.Services;
+import com.example.salon_project.model.*;
 import com.example.salon_project.request.CategoryRequest;
 import com.example.salon_project.request.ServiceRequest;
-import com.example.salon_project.service.CategoryService;
-import com.example.salon_project.service.PhotoService;
-import com.example.salon_project.service.SalonService;
-import com.example.salon_project.service.ServicesService;
+import com.example.salon_project.service.*;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -41,6 +36,12 @@ public class SalonController {
 
     @Autowired
     private PhotoService photoService;
+
+    @Autowired
+    private BookingService bookingService;
+
+    @Autowired
+    private UserService userService;
 
     // Переход на страницу изменения салона
     @GetMapping("/change_salon_page")
@@ -151,6 +152,85 @@ public class SalonController {
                     .body("Ошибка при сохранении данных: " + e.getMessage());
         }
     }
+
+
+    @GetMapping("/salon/{id}")
+    public String getSalonById(@PathVariable("id") Long id, Model model) {
+        Salon salon = salonService.findById(id); // Получаем салон по ID
+
+        // Получаем категории и услуги
+        List<Category> categories = categoryService.findBySalonId(salon.getId());
+        for (Category category : categories) {
+            List<Services> services = servicesService.findByCategoryId(category.getId());
+            category.setServices(services);
+        }
+        salon.setCategories(categories);
+
+        model.addAttribute("salon", salon);
+        return "salon_page";
+    }
+
+    @PostMapping("/saveBooking")
+    public String saveBooking(
+            @RequestParam Long salonId,
+            @RequestParam String clientName,
+            @RequestParam Long serviceId,
+            @RequestParam String date,
+            @RequestParam String time,
+            HttpSession session,
+            Model model) {
+
+        Long userId = (Long) session.getAttribute("userId");
+        if (userId == null) {
+            return "redirect:/login"; // Перенаправление на логин, если пользователь не авторизован
+        }
+
+        User user = userService.findById(userId);
+
+        // Логика сохранения данных в базу
+        Booking booking = new Booking();
+        booking.setSalonId(salonId);
+        booking.setClientName(clientName);
+        booking.setServiceId(serviceId);
+        booking.setDate(date);
+        booking.setTime(time);
+        booking.setUser(user);
+
+        bookingService.save(booking);
+
+        model.addAttribute("message", "Бронирование успешно сохранено!");
+        return "redirect:/salon/" + salonId;
+    }
+
+    @GetMapping("/profile")
+    public String showProfile(HttpSession session, Model model) {
+        Long userId = (Long) session.getAttribute("userId");
+        if (userId == null) {
+            return "redirect:/login"; // Перенаправление на страницу логина
+        }
+
+        // Получаем бронирования пользователя
+        List<Booking> bookings = bookingService.findByUserId(userId);
+
+        // Дополняем информацию о салоне
+        for (Booking booking : bookings) {
+            Salon salon = salonService.findById(booking.getSalonId());
+            if (salon != null) {
+                booking.setSalonName(salon.getName());
+            }
+        }
+
+        // Добавляем бронирования в модель
+        model.addAttribute("bookings", bookings);
+
+        return "profile"; // Возвращаем шаблон профиля
+    }
+
+
+
+
+
+
 
 
 }
