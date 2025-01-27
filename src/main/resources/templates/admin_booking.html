@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Заказы администратора</title>
+  <style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+    }
+
+    .header-container {
+        background-color: #333;
+        color: #fff;
+        padding: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .header-container h1 {
+        margin: 0;
+        font-size: 1.8rem;
+    }
+
+    .nav-links {
+        list-style: none;
+        display: flex;
+        margin: 0;
+        padding: 0;
+    }
+
+    .nav-links li {
+        margin-left: 20px;
+    }
+
+    .nav-links a {
+        color: #fff;
+        text-decoration: none;
+    }
+
+    .container {
+        max-width: 1100px;
+        margin: 40px auto;
+        background: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .table-container {
+        margin-top: 20px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        text-align: left;
+        padding: 10px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    th {
+        background-color: #f9f9f9;
+    }
+
+    .date-picker {
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+    }
+
+    .date-picker input[type="date"] {
+        margin-left: 10px;
+    }
+  </style>
+</head>
+<body>
+<div class="header-container">
+  <h1>logjito</h1>
+  <nav>
+    <ul class="nav-links">
+      <li><a href="/home">Главное</a></li>
+      <li><a href="/change_salon_page">Изменить данные</a></li>
+    </ul>
+  </nav>
+</div>
+
+<div class="container">
+  <h2>Сегодня</h2>
+  <div class="date-picker">
+    <label for="selectedDate">Выбрать день:</label>
+    <input type="date" id="selectedDate" name="selectedDate" th:value="${currentDate}">
+  </div>
+
+  <div class="table-container">
+    <table>
+      <thead>
+      <tr>
+        <th>ФИО</th>
+        <th>Дата</th>
+        <th>Время</th>
+        <th>Услуга</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="booking : ${bookings}">
+        <td th:text="${booking.clientName}">ФИО клиента</td>
+        <td th:text="${booking.date}">Дата</td>
+        <td th:text="${booking.time}">Время</td>
+        <td th:text="${booking.serviceName}">Название услуги</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+</body>
+</html>

@@ -20,4 +20,13 @@ public class BookingService {
         return bookingRepository.findByUserId(userId);
     }
 
+    public List<Booking> findBookingsBySalon(Long salonId) {
+        return bookingRepository.findBySalonId(salonId);
+    }
+
+    public List<Booking> findBookingsBySalonAndDate(Long salonId, String date) {
+        return bookingRepository.findBySalonIdAndDate(salonId, date);
+    }
+
+
 }

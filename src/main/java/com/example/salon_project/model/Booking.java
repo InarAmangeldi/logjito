@@ -31,7 +31,21 @@ public class Booking {
     @Transient
     private String salonName;
 
+    @Transient
+    private String serviceName;
+
     // Геттеры и сеттеры
+
+
+    public String getServiceName() {
+        return serviceName;
+    }
+
+    public void setServiceName(String serviceName) {
+        this.serviceName = serviceName;
+    }
+
+
 
     public String getSalonName() {
         return salonName;

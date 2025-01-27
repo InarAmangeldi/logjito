@@ -68,7 +68,11 @@ public class UserController {
             if (user.getPassword().equals(password)) {
                 if ("ADMIN".equals(user.getRole())) {
                     session.setAttribute("adminId", user.getId());
-                    return "redirect:/change_salon_page";
+                    if (salonService.existsByAdminId(user.getId())) {
+                        return "redirect:/admin_booking"; // Перенаправление на страницу admin_booking
+                    } else {
+                        return "redirect:/change_salon_page"; // Перенаправление на страницу создания салона
+                    }
                 } else {
                     session.setAttribute("userId", user.getId());
                     return "redirect:/home";
@@ -79,14 +83,6 @@ public class UserController {
         return "login";
     }
 
-
-    @GetMapping("/admin_main")
-    public String showAdminMainPage(Model model) {
-        // Если необходимо передать данные для страницы, сделайте это здесь
-        return "admin_main"; // Имя HTML-шаблона
-    }
-
-
     @Autowired
     private SalonService salonService;
 
@@ -96,18 +92,5 @@ public class UserController {
         model.addAttribute("salons", salons);
         return "home";
     }
-
-//    @GetMapping("/salon/{id}")
-//    public String getSalonById(@PathVariable("id") Long id, Model model) {
-//        Salon salon = salonService.findById(id); // Метод для поиска салона по ID
-//        model.addAttribute("salon", salon);
-//        model.addAttribute("mainPhoto", salon.getPhotos().isEmpty() ? "/uploads/placeholder.jpg" : salon.getPhotos().get(0).getPhotoUrl()); // Берем первое фото
-//        return "salon_page"; // Название HTML-шаблона
-//    }
-
-
-
-
-
 
 }

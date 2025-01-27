@@ -92,6 +92,7 @@ public class SalonController {
                     Category category = new Category();
                     category.setName(value);
                     category.setSalonId(savedSalon.getId());
+                    System.out.println("Saving category with salonId: " + savedSalon.getId());
                     savedCategories.put(categoryIndex, categoryService.saveCategory(category));
                 } else if (key.matches("categories\\[\\d+\\]\\.services\\[\\d+\\]\\..+")) {
                     // Обрабатываем услугу
@@ -225,6 +226,42 @@ public class SalonController {
 
         return "profile"; // Возвращаем шаблон профиля
     }
+
+    @GetMapping("/admin_booking")
+    public String showAdminBookings(HttpSession session, Model model,
+                                    @RequestParam(value = "selectedDate", required = false) String selectedDate) {
+        Long adminId = (Long) session.getAttribute("adminId");
+        if (adminId == null) {
+            return "redirect:/login";
+        }
+
+        // Получение ID салона, связанного с администратором
+        Salon salon = salonService.findByAdminId(adminId);
+        if (salon == null) {
+            return "redirect:/change_salon_page"; // Если салон не найден
+        }
+
+        // Выборка заказов по дате
+        List<Booking> bookings;
+        if (selectedDate != null) {
+            bookings = bookingService.findBookingsBySalonAndDate(salon.getId(), selectedDate);
+        } else {
+            bookings = bookingService.findBookingsBySalon(salon.getId());
+        }
+
+        // Заполнение поля serviceName
+        for (Booking booking : bookings) {
+            Services service = servicesService.findById(booking.getServiceId());
+            if (service != null) {
+                booking.setServiceName(service.getName());
+            }
+        }
+
+        model.addAttribute("currentDate", selectedDate);
+        model.addAttribute("bookings", bookings);
+        return "admin_booking";
+    }
+
 
 
 

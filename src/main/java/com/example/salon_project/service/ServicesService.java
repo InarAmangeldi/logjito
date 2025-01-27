@@ -20,4 +20,9 @@ public class ServicesService { // Переименовали класс
         return serviceRepository.findByCategoryId(categoryId);
     }
 
+    public Services findById(Long id) {
+        return serviceRepository.findById(id).orElse(null);
+    }
+
+
 }

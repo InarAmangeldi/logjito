@@ -11,8 +11,8 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "salon_id", insertable = false, updatable = false)
-    private Long salonId; // ID салона
+    @Column(name = "salon_id")
+    private Long salonId;
 
     @Column(name = "name")
     private String name;
@@ -21,7 +21,7 @@ public class Category {
     private List<Services> services;
 
     @ManyToOne
-    @JoinColumn(name = "salon_id", referencedColumnName = "id")
+    @JoinColumn(name = "salon_id", referencedColumnName = "id", insertable = false, updatable = false)
     private Salon salon;
 
     // Getters и Setters
