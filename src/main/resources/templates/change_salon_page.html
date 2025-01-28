@@ -21,6 +21,11 @@
         border-radius: 10px;
     }
 
+    h2 {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
     .form-group {
         margin-bottom: 20px;
     }
@@ -37,6 +42,7 @@
         font-size: 16px;
         border: 1px solid #ccc;
         border-radius: 5px;
+        box-sizing: border-box;
     }
 
     textarea {
@@ -54,6 +60,34 @@
 
     .category-item {
         margin-bottom: 20px;
+        padding: 15px;
+        border: 2px solid #ccc;
+        border-radius: 5px;
+        background-color: #fff;
+    }
+
+    .services-container {
+        margin-top: 10px;
+        padding: 10px;
+        border-left: 4px solid #6c467e;
+        background: #f8f8f8;
+        border-radius: 5px;
+    }
+
+    .service-item {
+        margin-bottom: 10px;
+        padding: 10px;
+        border: 1px solid #ddd;
+        background: #ffffff;
+        border-radius: 5px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .service-item input {
+        flex: 1 1 30%;
+        min-width: 150px;
     }
 
     .add-category, .add-service, .btn-save {
@@ -68,25 +102,39 @@
 
     .add-category:hover, .add-service:hover, .btn-save:hover {
         background-color: #52335d;
+
+            .remove-btn {
+        background: none;
+        border: none;
+        color: red;
+        font-size: 18px;
+        cursor: pointer;
+        margin-right: 8px;
     }
 
-    .photo-box {
-        width: 150px;
-        height: 150px;
-        background-color: #f9f9f9;
-        border: 2px dashed #ccc;
-        border-radius: 5px;
+    .remove-btn:hover {
+        color: darkred;
+    }
+
+    .service-item {
         display: flex;
         align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        margin-bottom: 10px;
+        gap: 10px;
     }
 
-    .photo-preview {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
+    .category-item {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        position: relative;
+        padding-left: 30px;
+    }
+
+    .category-item .remove-btn {
+        position: absolute;
+        left: 5px;
+        top: 5px;
+    }
     }
   </style>
 </head>
@@ -94,6 +142,7 @@
 <main>
   <h2>Изменить данные</h2>
   <form action="/save" method="post" enctype="multipart/form-data">
+
     <!-- Сохранение информации о салоне -->
     <div class="form-group">
       <label for="name">Название салона</label>
@@ -103,7 +152,6 @@
       <label for="info">Дополнительная информация</label>
       <textarea id="info" name="info" required></textarea>
     </div>
-
 
     <!-- Загрузка фотографий -->
     <div class="photo-upload-section">
@@ -119,12 +167,14 @@
     <div class="category-section">
       <h3>Категории и услуги</h3>
       <div id="categories-container">
-        <div class="category-item">
+        <div class="category-item" data-index="0">
           <input type="text" name="categories[0].name" placeholder="Название категории" required>
-          <div class="service-item">
-            <input type="text" name="categories[0].services[0].name" placeholder="Название услуги" required>
-            <input type="text" name="categories[0].services[0].duration" placeholder="Длительность" required>
-            <input type="text" name="categories[0].services[0].price" placeholder="Цена" required>
+          <div class="services-container">
+            <div class="service-item">
+              <input type="text" name="categories[0].services[0].name" placeholder="Название услуги" required>
+              <input type="text" name="categories[0].services[0].duration" placeholder="Длительность" required>
+              <input type="text" name="categories[0].services[0].price" placeholder="Цена" required>
+            </div>
           </div>
           <button type="button" class="add-service">Добавить услугу</button>
         </div>
@@ -144,32 +194,72 @@
     categoryIndex++;
     const categoryContainer = document.createElement('div');
     categoryContainer.className = 'category-item';
+    categoryContainer.dataset.index = categoryIndex;
     categoryContainer.innerHTML = `
+      <button type="button" class="remove-btn remove-category">❌</button>
       <input type="text" name="categories[${categoryIndex}].name" placeholder="Название категории" required>
-      <div class="service-item">
-        <input type="text" name="categories[${categoryIndex}].services[0].name" placeholder="Название услуги" required>
-        <input type="text" name="categories[${categoryIndex}].services[0].duration" placeholder="Длительность" required>
-        <input type="text" name="categories[${categoryIndex}].services[0].price" placeholder="Цена" required>
+      <div class="services-container">
+        <div class="service-item">
+          <button type="button" class="remove-btn remove-service">❌</button>
+          <input type="text" name="categories[${categoryIndex}].services[0].name" placeholder="Название услуги" required>
+          <input type="text" name="categories[${categoryIndex}].services[0].duration" placeholder="Длительность" required>
+          <input type="text" name="categories[${categoryIndex}].services[0].price" placeholder="Цена" required>
+        </div>
       </div>
       <button type="button" class="add-service">Добавить услугу</button>
     `;
     document.getElementById('categories-container').appendChild(categoryContainer);
 
-    const addServiceButton = categoryContainer.querySelector('.add-service');
-    let serviceIndex = 0;
-    addServiceButton.addEventListener('click', () => {
-      serviceIndex++;
-      const serviceItem = document.createElement('div');
-      serviceItem.className = 'service-item';
-      serviceItem.innerHTML = `
-        <input type="text" name="categories[${categoryIndex}].services[${serviceIndex}].name" placeholder="Название услуги" required>
-        <input type="text" name="categories[${categoryIndex}].services[${serviceIndex}].duration" placeholder="Длительность" required>
-        <input type="text" name="categories[${categoryIndex}].services[${serviceIndex}].price" placeholder="Цена" required>
-      `;
-      categoryContainer.appendChild(serviceItem);
-    });
+    categoryContainer.querySelector('.add-service').addEventListener('click', addService);
+    categoryContainer.querySelector('.remove-category').addEventListener('click', removeCategory);
+    categoryContainer.querySelector('.remove-service').addEventListener('click', removeService);
   });
 
+  function addService(event) {
+    const categoryContainer = event.target.closest('.category-item');
+    const categoryIdx = categoryContainer.dataset.index;
+    const servicesContainer = categoryContainer.querySelector('.services-container');
+
+    let serviceIndex = servicesContainer.querySelectorAll('.service-item').length;
+
+    const serviceItem = document.createElement('div');
+    serviceItem.className = 'service-item';
+    serviceItem.innerHTML = `
+      <button type="button" class="remove-btn remove-service">❌</button>
+      <input type="text" name="categories[${categoryIdx}].services[${serviceIndex}].name" placeholder="Название услуги" required>
+      <input type="text" name="categories[${categoryIdx}].services[${serviceIndex}].duration" placeholder="Длительность" required>
+      <input type="text" name="categories[${categoryIdx}].services[${serviceIndex}].price" placeholder="Цена" required>
+    `;
+
+    servicesContainer.appendChild(serviceItem);
+
+    // Добавляем обработчик удаления для новой услуги
+    serviceItem.querySelector('.remove-service').addEventListener('click', removeService);
+  }
+
+  function removeCategory(event) {
+    const categoryContainer = event.target.closest('.category-item');
+    categoryContainer.remove();
+  }
+
+  function removeService(event) {
+    const serviceItem = event.target.closest('.service-item');
+    serviceItem.remove();
+  }
+
+  // Добавляем обработчики событий для уже существующих кнопок
+  document.querySelectorAll('.add-service').forEach(button => {
+    button.addEventListener('click', addService);
+  });
+
+  document.querySelectorAll('.remove-category').forEach(button => {
+    button.addEventListener('click', removeCategory);
+  });
+
+  document.querySelectorAll('.remove-service').forEach(button => {
+    button.addEventListener('click', removeService);
+  });
 </script>
+
 </body>
 </html>

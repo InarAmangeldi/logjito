@@ -213,19 +213,28 @@ public class SalonController {
         // Получаем бронирования пользователя
         List<Booking> bookings = bookingService.findByUserId(userId);
 
-        // Дополняем информацию о салоне
+        // Дополняем информацию о салоне и услуге
         for (Booking booking : bookings) {
             Salon salon = salonService.findById(booking.getSalonId());
             if (salon != null) {
                 booking.setSalonName(salon.getName());
             }
+
+            Services service = servicesService.findById(booking.getServiceId());
+            if (service != null) {
+                booking.setServiceName(service.getName()); // Заполняем название услуги
+                booking.setPrice(service.getPrice()); // Заполняем цену услуги
+            }
         }
+
+
 
         // Добавляем бронирования в модель
         model.addAttribute("bookings", bookings);
 
         return "profile"; // Возвращаем шаблон профиля
     }
+
 
     @GetMapping("/admin_booking")
     public String showAdminBookings(HttpSession session, Model model,

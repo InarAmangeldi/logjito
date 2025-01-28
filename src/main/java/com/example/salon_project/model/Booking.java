@@ -34,7 +34,17 @@ public class Booking {
     @Transient
     private String serviceName;
 
+    @Transient
+    private Double price; // Поле не сохраняется в БД, но будет использоваться в контроллере
     // Геттеры и сеттеры
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
 
 
     public String getServiceName() {
