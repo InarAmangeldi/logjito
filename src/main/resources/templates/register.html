@@ -156,9 +156,9 @@
         color: #2d2d2d;
     }
     .left-half {
-            width: 50%;
-            background: url('/images/vhodsalon.png');
-            position: relative;
+      width: 50%;
+      background: url('/images/vhodsalon.png');
+      position: relative;
     }
 
     .left-half::before {
@@ -176,11 +176,18 @@
 <body>
   <header>
     <nav class="navbar">
-      <li><a th:href="@{/MainPage}">Главная</a></li>
-      <li><a th:href="@{/about-us}">О нас</a></li>
-      <li><a th:href="@{/contacts}">Контакты</a></li>
-      <li><a th:href="@{/login}">Войти</a></li>
-      <li><a th:href="@{/register}">Зарегистрироваться</a></li>
+      <ul class="navbar-left">
+        <li><a >         </a></li>
+        <li><a th:href="@{/about_us}">О нас</a></li>
+        <li><a th:href="@{/contacts}">Контакты</a></li>
+      </ul>
+      <div class="navbar-center" style="flex-grow: 1; text-align: center;">
+        <h1 style="margin: 0; display: inline-block;">logjito</h1>
+      </div>
+      <ul class="navbar-right">
+        <li><a th:href="@{/login}">Войти</a></li>
+        <li><a th:href="@{/register}">Зарегистрироваться</a></li>
+      </ul>
     </nav>
   </header>
 
@@ -198,7 +205,10 @@
           <input type="password" class="input-field" placeholder="Пароль" name="password" required>
           <button type="submit" class="register-button">Зарегистрироваться</button>
         </form>
-        <p>Уже есть аккаунт? <a href="login.html">Войти</a></p>
+        <div th:if="${error}" style="color: red; margin-bottom: 20px;">
+          <p th:text="${error}"></p>
+        </div>
+        <p>Уже есть аккаунт? <a th:href="@{/register}">Войти</a></p>
       </div>
     </div>
   </div>

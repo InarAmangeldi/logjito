@@ -92,5 +92,14 @@ public class UserController {
         model.addAttribute("salons", salons);
         return "home";
     }
+    @GetMapping("/about_us")
+    public String showAboutUsPage() {
+        return "about_us";
+    }
+
+    @GetMapping("/contacts")
+    public String showContactsPage() {
+        return "contacts";
+    }
 
 }

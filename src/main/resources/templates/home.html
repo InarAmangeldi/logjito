@@ -4,28 +4,36 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Logjito - Бронирование услуг</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    body {
-        font-family: Arial, sans-serif;
+    * {
+        box-sizing: border-box;
         margin: 0;
         padding: 0;
-        background-color: #f0f0f0;
     }
+    body, html {
+        height: 100%;
+        font-family: 'Montserrat', sans-serif;
+    }
+
     header {
         background-color: #ffffff;
         padding: 10px 20px;
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     }
+
     .navbar {
         display: flex;
         justify-content: space-between;
         align-items: center;
     }
+
     .navbar-left, .navbar-right {
         list-style: none;
         display: flex;
         gap: 30px;
     }
+
     .navbar-left a, .navbar-right a {
         text-decoration: none;
         color: #5c5c5c;
@@ -34,10 +42,12 @@
         font-weight: 500;
         transition: background-color 0.3s, color 0.3s;
     }
+
     .navbar-left a:hover, .navbar-right a:hover {
         background-color: #a85ac2;
         color: #fff;
     }
+
     .navbar-center h1 {
         margin: 0;
         font-size: 2.5em;
@@ -232,9 +242,15 @@
       <li><a href="/home">Главная</a></li>
       <li><a href="/profile">Личный кабинет</a></li>
     </ul>
-    <div class="navbar-center">
-      <h1>logjito</h1>
+    <div class="navbar-center" style="flex-grow: 1; display: flex; justify-content: center;">
+      <h1 style="margin: 0;">logjito</h1>
     </div>
+    <ul class="navbar-right">
+      <li><a></a></li>
+      <li><a></a></li>
+      <li><a></a></li>
+      <li><a></a></li>
+    </ul>
   </nav>
 </header>
 
@@ -281,32 +297,6 @@
       </th:block>
     </section>
 
-
-
-    <aside class="sidebar">
-      <h3>Популярные салоны</h3>
-      <ul>
-        <li>Салон 4</li>
-        <li>Салон 4</li>
-        <li>Салон 4</li>
-        <li>Салон 4</li>
-        <li>Салон 4</li>
-      </ul>
-
-      <h3>Отзывы</h3>
-      <div class="reviews">
-        <p><strong>Иван:</strong> Отличный сервис!</p>
-      </div>
-      <div class="reviews">
-        <p><strong>Мария:</strong> Очень понравилось!</p>
-      </div>
-
-      <h3>События и акции</h3>
-      <ul>
-        <li>Скидка 20% на маникюр в октябре</li>
-        <li>Акция: стрижка + укладка за полцены!</li>
-      </ul>
-    </aside>
 
   </div>
 </main>
