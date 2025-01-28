@@ -262,6 +262,12 @@ public class SalonController {
         return "admin_booking";
     }
 
+    @GetMapping("/search")
+    public String searchSalons(@RequestParam("query") String query, Model model) {
+        List<Salon> foundSalons = salonService.findByNameContainingIgnoreCase(query);
+        model.addAttribute("salons", foundSalons);
+        return "home"; // Возвращает ту же страницу с обновленным списком
+    }
 
 
 

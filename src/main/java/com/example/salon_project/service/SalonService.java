@@ -37,5 +37,8 @@ public class SalonService {
     }
 
 
+    public List<Salon> findByNameContainingIgnoreCase(String query) {
+        return salonRepository.findByNameContainingIgnoreCase(query);
+    }
 
 }
