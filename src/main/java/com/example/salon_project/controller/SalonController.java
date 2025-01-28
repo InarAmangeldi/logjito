@@ -278,10 +278,12 @@ public class SalonController {
         return "home"; // Возвращает ту же страницу с обновленным списком
     }
 
-
-
-
-
+    @PostMapping("/deleteBookings")
+    @ResponseBody
+    public ResponseEntity<String> deleteBookings(@RequestBody List<Long> bookingIds) {
+        bookingService.deleteBookingsByIds(bookingIds);
+        return ResponseEntity.ok("Удалено успешно");
+    }
 
 
 

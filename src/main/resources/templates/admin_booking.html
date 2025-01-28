@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Заказы администратора</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <style>
     body {
         font-family: Arial, sans-serif;
@@ -12,105 +14,134 @@
         padding: 0;
     }
 
-    .header-container {
-        background-color: #333;
-        color: #fff;
-        padding: 20px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    .header-container h1 {
-        margin: 0;
-        font-size: 1.8rem;
-    }
-
-    .nav-links {
-        list-style: none;
-        display: flex;
-        margin: 0;
-        padding: 0;
-    }
-
-    .nav-links li {
-        margin-left: 20px;
-    }
-
-    .nav-links a {
-        color: #fff;
-        text-decoration: none;
-    }
-
     .container {
-        max-width: 1100px;
-        margin: 40px auto;
-        background: #fff;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
+    max-width: 1100px;
+    margin: 40px auto;
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(255, 0, 0, 0.1);
+}
 
-    .table-container {
-        margin-top: 20px;
-    }
+/* Фильтры */
+.buttons {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
 
-    table {
-        width: 100%;
-        border-collapse: collapse;
-    }
+.filter-btn {
+    background-color: #ff6666;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
 
-    th, td {
-        text-align: left;
-        padding: 10px;
-        border-bottom: 1px solid #ddd;
-    }
+.filter-btn:hover {
+    background-color: #cc0000;
+}
 
-    th {
-        background-color: #f9f9f9;
-    }
+.date-picker {
+    padding: 8px;
+    border: 2px solid #ff6666;
+    border-radius: 5px;
+    font-size: 16px;
+}
 
-    .date-picker {
-        margin-bottom: 20px;
-        display: flex;
-        align-items: center;
-    }
+.delete-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+}
 
-    .date-picker input[type="date"] {
-        margin-left: 10px;
-    }
+.delete-icon {
+    width: 24px;
+    height: 24px;
+    filter: invert(30%) sepia(70%) saturate(2000%) hue-rotate(0deg);
+}
+
+/* Таблица */
+.table-container {
+    margin-top: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    text-align: left;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: #f9f9f9;
+}
+
+.delete-single {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.delete-single .delete-icon {
+    width: 20px;
+    height: 20px;
+    transition: transform 0.2s ease-in-out;
+}
+
+.delete-single:hover .delete-icon {
+    transform: scale(1.2);
+}
   </style>
 </head>
 <body>
-<div class="header-container">
-  <h1>logjito</h1>
-  <nav>
-    <ul class="nav-links">
-      <li><a href="/home">Главное</a></li>
-      <li><a href="/change_salon_page">Изменить данные</a></li>
-    </ul>
+
+<header>
+  <nav class="navbar" style="display: flex; justify-content: center; padding: 20px 0; background: white; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);">
+    <h1 style="margin: 0; font-size: 2.5em; font-weight: bold;
+               background: linear-gradient(45deg, #000000, #a85ac2);
+               -webkit-background-clip: text;
+               -webkit-text-fill-color: transparent;">
+      logjito
+    </h1>
   </nav>
-</div>
+</header>
+
 
 <div class="container">
-  <h2>Сегодня</h2>
-  <div class="date-picker">
-    <label for="selectedDate">Выбрать день:</label>
-    <input type="date" id="selectedDate" name="selectedDate" th:value="${currentDate}">
+  <h2>Заказы</h2>
+
+  <div class="buttons">
+    <button id="deleteSelected" class="delete-btn">
+      <img src="https://cdn-icons-png.flaticon.com/512/484/484662.png" alt="Удалить" class="delete-icon">
+    </button>
+    <button id="showAll" class="filter-btn">Все</button>
+    <input type="date" id="selectedDate" name="selectedDate" th:value="${currentDate}" class="date-picker">
   </div>
 
   <div class="table-container">
     <table>
       <thead>
       <tr>
+        <th><input type="checkbox" id="selectAll"></th>
         <th>ФИО</th>
         <th>Дата</th>
         <th>Время</th>
         <th>Услуга</th>
       </tr>
       </thead>
-      <tbody>
-      <tr th:each="booking : ${bookings}">
+      <tbody id="bookingTable">
+      <tr th:each="booking : ${bookings}" th:attr="data-date=${booking.date}">
+        <td><input type="checkbox" class="selectBooking" th:value="${booking.id}"></td>
         <td th:text="${booking.clientName}">ФИО клиента</td>
         <td th:text="${booking.date}">Дата</td>
         <td th:text="${booking.time}">Время</td>
@@ -119,6 +150,76 @@
       </tbody>
     </table>
   </div>
+
 </div>
+
+<script>
+  $(document).ready(function () {
+    // Выделение всех записей
+    $("#selectAll").click(function () {
+        $(".selectBooking").prop('checked', this.checked);
+    });
+
+    // Удаление выделенных записей по клику на мусорку
+    $("#deleteSelected").click(function () {
+        let selectedIds = $(".selectBooking:checked").map(function () {
+            return $(this).val();
+        }).get();
+
+        if (selectedIds.length > 0) {
+            $.ajax({
+                type: "POST",
+                url: "/deleteBookings",
+                contentType: "application/json",
+                data: JSON.stringify(selectedIds),
+                success: function () {
+                    $(".selectBooking:checked").closest("tr").remove();
+                },
+                error: function () {
+                    alert("Ошибка при удалении записей");
+                }
+            });
+        } else {
+            alert("Выберите хотя бы одну запись для удаления!");
+        }
+    });
+
+    // Удаление одной записи по нажатию на иконку мусорки
+    $(".delete-single").click(function () {
+        let bookingId = $(this).attr("data-id");
+
+        $.ajax({
+            type: "POST",
+            url: "/deleteBooking/" + bookingId,
+            success: function () {
+                $("tr[data-id='" + bookingId + "']").remove();
+            },
+            error: function () {
+                alert("Ошибка при удалении записи");
+            }
+        });
+    });
+
+    // Фильтр по выбранной дате
+    $("#selectedDate").change(function () {
+        let selectedDate = $(this).val();
+        console.log("Выбранная дата:", selectedDate);
+
+        $("#bookingTable tr").each(function () {
+            let rowDate = $(this).attr("data-date").trim();
+            $(this).toggle(rowDate === selectedDate);
+        });
+    });
+
+    // Показать все записи
+    $("#showAll").click(function () {
+        console.log("Выбраны все записи");
+        $("#bookingTable tr").show();
+    });
+});
+
+
+</script>
+
 </body>
 </html>

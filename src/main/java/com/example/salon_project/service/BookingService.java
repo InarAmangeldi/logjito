@@ -28,5 +28,9 @@ public class BookingService {
         return bookingRepository.findBySalonIdAndDate(salonId, date);
     }
 
+    public void deleteBookingsByIds(List<Long> bookingIds) {
+        bookingRepository.deleteAllById(bookingIds);
+    }
+
 
 }
