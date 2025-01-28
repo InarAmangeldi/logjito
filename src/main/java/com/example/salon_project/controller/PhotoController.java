@@ -32,32 +32,54 @@ public class PhotoController {
     @PostMapping("/upload-photo")
     public ResponseEntity<String> uploadPhoto(
             @RequestParam("salonId") Long salonId,
-            @RequestParam("photos") MultipartFile[] photos) {
-        for (MultipartFile photo : photos) {
-            try {
-                // Генерация уникального имени файла
-                String fileName = UUID.randomUUID() + "_" + photo.getOriginalFilename();
-
-                // Определяем путь для сохранения
-                Path uploadPath = Paths.get(System.getProperty("user.dir") + "/uploads/");
-                Files.createDirectories(uploadPath); // Создаем папку, если её нет
-
-                Path filePath = uploadPath.resolve(fileName); // Полный путь файла
-                Files.write(filePath, photo.getBytes()); // Сохраняем файл на диск
-
-                // Сохраняем информацию о фото в базу данных
-                Photo photoEntity = new Photo();
-                Salon salon = salonService.findById(salonId); // Получаем объект Salon по ID
-                photoEntity.setSalon(salon);
-                photoEntity.setPhotoUrl("/uploads/" + fileName); // Относительный путь
-                photoService.save(photoEntity);
-
-            } catch (IOException e) {
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                        .body("Ошибка при загрузке файла: " + e.getMessage());
-            }
+            @RequestParam("photo") MultipartFile photo) {
+        if (photo.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Фото не было загружено");
         }
-        return ResponseEntity.ok("Фотографии успешно сохранены");
-    }
 
+        try {
+            // Проверка типа файла
+            String contentType = photo.getContentType();
+            if (contentType == null || !contentType.startsWith("image")) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body("Только изображения можно загружать");
+            }
+
+            // Генерация уникального имени файла
+            String fileName = UUID.randomUUID() + "_" + photo.getOriginalFilename();
+
+            // Определяем путь для сохранения
+            Path uploadPath = Paths.get(System.getProperty("user.dir") + "/uploads/");
+            Files.createDirectories(uploadPath); // Создаем папку, если её нет
+
+            Path filePath = uploadPath.resolve(fileName); // Полный путь файла
+
+            // Проверка на существование файла с таким же именем
+            if (Files.exists(filePath)) {
+                return ResponseEntity.status(HttpStatus.CONFLICT)
+                        .body("Файл с таким именем уже существует");
+            }
+
+            // Сохраняем файл на диск
+            Files.write(filePath, photo.getBytes());
+
+            // Сохраняем информацию о фото в базе данных
+            Photo photoEntity = new Photo();
+            Salon salon = salonService.findById(salonId); // Получаем объект Salon по ID
+            if (salon == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body("Салон с таким ID не найден");
+            }
+            photoEntity.setSalon(salon);
+            photoEntity.setPhotoUrl("/uploads/" + fileName); // Относительный путь
+            photoService.save(photoEntity);
+
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Ошибка при загрузке файла: " + e.getMessage());
+        }
+
+        return ResponseEntity.ok("Фотография успешно сохранена");
+    }
 }

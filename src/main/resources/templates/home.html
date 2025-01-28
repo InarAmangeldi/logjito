@@ -304,7 +304,8 @@
     <section class="salons-list">
       <th:block th:each="salon : ${salons}">
         <a th:href="@{/salon/{id}(id=${salon.id})}" class="salon-card">
-          <img th:src="${salon.photos[0]?.photoUrl ?: '/uploads/placeholder.jpg'}" alt="Salon Photo">
+          <img th:src="${salon.photos != null and !salon.photos.isEmpty() ? salon.photos[0].photoUrl : '/uploads/placeholder.jpg'}" alt="Salon Photo">
+
           <h2 th:text="${salon.name}">Название салона</h2>
           <p th:text="${salon.info}">Информация о салоне</p>
         </a>
