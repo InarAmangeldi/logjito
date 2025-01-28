@@ -222,9 +222,7 @@
         <div class="carousel">
             <img th:src="${salon.photos[0]?.photoUrl ?: '/uploads/placeholder.jpg'}" alt="Фото салона" id="salon-image">
         </div>
-        <div class="mini-images">
-            <img th:each="photo : ${salon.photos}" th:src="${photo.photoUrl}" th:alt="'Фото ' + ${salon.name}" onclick="setImage(this)">
-        </div>
+
     </div>
 
     <div class="salon-info">
