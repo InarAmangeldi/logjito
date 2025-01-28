@@ -34,7 +34,9 @@ public class UserController {
                                @RequestParam String email,
                                @RequestParam String password,
                                @RequestParam(defaultValue = "USER") String role,
-                               Model model) {
+                               Model model,
+                               HttpSession session
+    ) {
         User user = new User();
         user.setName(name);
         user.setPhone(phone);
@@ -48,7 +50,8 @@ public class UserController {
         model.addAttribute("phone", phone);
         model.addAttribute("email", email);
         model.addAttribute("password", password);
-        return "home";
+        session.setAttribute("userId", user.getId());
+        return "redirect:/home";
     }
 
     @GetMapping("/login")
