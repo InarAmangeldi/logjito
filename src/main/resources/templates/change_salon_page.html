@@ -172,24 +172,25 @@
     }
 
     /* Превью (небольшой размер) */
-    .thumbnail-container {
-      width: 80px;
-      height: 80px;
-      border: 2px solid #ccc;
-      border-radius: 6px;
-      overflow: hidden;
-      background: #fafafa;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+.thumbnail-container {
+  width: 80px;   /* Ширина контейнера */
+  height: 80px;  /* Высота контейнера */
+  border: 2px solid #ccc;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #fafafa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-    .thumbnail-container img {
-      max-width: 50%;
-      max-height: 50%;
-      object-fit: cover;
-      display: block;
-    }
+.thumbnail-container img {
+  max-width: 100%;   /* Максимальная ширина картинки не больше 100% от контейнера */
+  max-height: 100%;  /* Максимальная высота картинки не больше 100% от контейнера */
+  object-fit: contain; /* Изображение сохраняет пропорции и обрезается при необходимости */
+  display: block;
+}
+
 
     /* Скрытый input */
     #fileImage {
@@ -352,26 +353,50 @@
 
 
 
-  document.getElementById('fileImage').addEventListener('change', function(event) {
-      const file = event.target.files[0];
-      const reader = new FileReader();
-      const imageError = document.getElementById('imageError');
-      const thumbnail = document.getElementById('thumbnail');
+document.getElementById('fileImage').addEventListener('change', function(event) {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+    const imageError = document.getElementById('imageError');
+    const thumbnail = document.getElementById('thumbnail');
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
 
-      // Проверяем размер файла
-      if (file && file.size > 1048576) { // 1MB
-          imageError.style.display = "block";
-          thumbnail.src = "images/placeholder.jpg"; // Если фото больше 1Мб, сбрасываем на стандартное
-          return;
-      }
+    const TARGET_WIDTH = 150;  // Фиксированная ширина
+    const TARGET_HEIGHT = 150; // Фиксированная высота
 
-      // Если размер ок, показываем фото
-      imageError.style.display = "none";
-      reader.onload = function(e) {
-          thumbnail.src = e.target.result;
-      };
-      reader.readAsDataURL(file);
-  });
+    // Проверяем размер файла (макс. 1 МБ)
+    if (file && file.size > 1048576) {
+        imageError.style.display = "block";
+        thumbnail.src = "images/placeholder.jpg";
+        return;
+    }
+
+    imageError.style.display = "none";
+
+    reader.onload = function(e) {
+        const img = new Image();
+        img.src = e.target.result;
+        img.onload = function() {
+            // Устанавливаем фиксированные размеры
+            canvas.width = TARGET_WIDTH;
+            canvas.height = TARGET_HEIGHT;
+
+            // Очищаем фон (чтобы не было артефактов)
+            ctx.clearRect(0, 0, TARGET_WIDTH, TARGET_HEIGHT);
+
+            // Обрезаем и центрируем изображение
+            let scale = Math.max(TARGET_WIDTH / img.width, TARGET_HEIGHT / img.height);
+            let x = (TARGET_WIDTH - img.width * scale) / 2;
+            let y = (TARGET_HEIGHT - img.height * scale) / 2;
+            ctx.drawImage(img, x, y, img.width * scale, img.height * scale);
+
+            // Устанавливаем новое изображение в превью
+            thumbnail.src = canvas.toDataURL("image/jpeg", 0.9); // Сжимаем до JPEG 90% качества
+        };
+    };
+
+    reader.readAsDataURL(file);
+});
 
 </script>
 

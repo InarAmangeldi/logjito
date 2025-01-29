@@ -144,7 +144,7 @@ public class SalonController {
                 }
             }
 
-            return ResponseEntity.ok("Данные успешно сохранены!");
+            return ResponseEntity.status(HttpStatus.FOUND).header("Location", "/admin_booking").build();
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
