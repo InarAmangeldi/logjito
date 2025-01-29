@@ -127,39 +127,67 @@
     }
 
     .salons-list {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr); /* Изменено на 3 колонки */
-      gap: 20px;
-      width: 100%; /* Убедитесь, что ширина списка салонов занимает 100% */
-      margin: 0; /* Убрано авто-центрирование */
-      }
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* Гибкая сетка */
+        gap: 20px;
+        justify-content: center; /* Центрирование сетки */
+        width: 80%; /* Делаем ширину больше, чтобы центрирование сработало */
+        max-width: 1200px; /* Ограничиваем максимальную ширину */
+        margin: 0 auto; /* Центрируем по горизонтали */
+    }
 
-      .salon-card {
-      background-color: white;
-      border-radius: 15px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-      overflow: hidden;
-      transition: transform 0.3s, box-shadow 0.3s;
-      text-decoration: none; /* Убираем подчеркивание у ссылок */
-      height: 300px; /* Задайте высоту для карточек, чтобы они были более однородными */
-      }
+    .salon-card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background-color: white;
+        border-radius: 15px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        transition: transform 0.3s, box-shadow 0.3s;
+        text-decoration: none;
+        padding: 15px;
+        height: 300px; /* Фиксированная высота */
+    }
 
-      .salon-card img {
-      width: 100%;
-      height: 150px; /* Уменьшена высота изображения */
-      object-fit: cover;
-      }
+    .salon-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
 
-      .salon-card h2 {
-      margin: 10px; /* Уменьшено отступы для заголовка */
-      color: #333;
-      font-size: 1.25em; /* Уменьшен размер шрифта заголовка */
-      }
+    .image-container {
+        width: 200px;
+        height: 200px; /* Фиксированная высота */
+        border-radius: 10px;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #f8f8f8;
+    }
 
-      .salon-card p {
-      margin: 0 10px 10px; /* Уменьшены отступы для текста */
-      color: #777;
-      }
+    .salon-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 10px;
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .salon-card h2 {
+        margin: 10px 0 5px;
+        color: #333;
+        font-size: 1.3em;
+        font-weight: bold;
+        text-align: right;
+    }
+
+    .salon-card p {
+        color: #777;
+        font-size: 0.9em;
+        max-width: 90%;
+    }
+
 
 
     .fav-button {
@@ -325,14 +353,16 @@
       <th:block th:each="salon : ${salons}">
         <a th:href="@{/salon/{id}(id=${salon.id})}" class="salon-card">
           <div class="image-container">
-            <img th:src="${salon.photoUrl != null ? salon.photoUrl : '/uploads/placeholder.jpg'}"
+            <img th:src="@{${salon.photoUrl != null ? salon.photoUrl : '/images/placeholder.jpg'}}"
                  class="salon-image" alt="Salon Photo">
           </div>
           <h2 th:text="${salon.name}">Название салона</h2>
-          <p th:text="${salon.info}">Информация о салоне</p>
+          <p th:text="${salon.info}">Краткая информация</p>
         </a>
       </th:block>
     </section>
+
+
 
 
 
@@ -345,19 +375,17 @@
 </footer>
 
 <script>
-  <script>
-document.addEventListener("DOMContentLoaded", function() {
-    let images = document.querySelectorAll(".salon-image");
+  document.addEventListener("DOMContentLoaded", function() {
+      let images = document.querySelectorAll(".salon-image");
 
-    images.forEach(img => {
-        img.onerror = function() {
-            this.src = "/images/placeholder.jpg"; // Если фото не загружается, ставим заглушку
-        };
-    });
-});
+      images.forEach(img => {
+          img.onerror = function() {
+              this.src = "/images/placeholder.jpg"; // Если фото не загружается, ставим заглушку
+          };
+      });
+  });
 </script>
 
-</script>
 
 </body>
 </html>

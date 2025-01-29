@@ -10,12 +10,13 @@ public class Salon {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "name", nullable = false)
     private String name;
 
     @Column(columnDefinition = "TEXT")
     private String info;
 
-    @Column(name = "admin_id")
+    @Column(name = "admin_id", nullable = false)
     private Long adminId;
 
     @OneToMany(mappedBy = "salon", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -25,45 +26,20 @@ public class Salon {
     private String photoUrl;
 
     // Getters и Setters
-    public Long getId() {
-        return id;
-    }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
 
-    public String getName() {
-        return name;
-    }
+    public String getInfo() { return info; }
+    public void setInfo(String info) { this.info = info; }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    public Long getAdminId() { return adminId; }
+    public void setAdminId(Long adminId) { this.adminId = adminId; }
 
-    public String getInfo() {
-        return info;
-    }
-
-    public void setInfo(String info) {
-        this.info = info;
-    }
-
-    public Long getAdminId() {
-        return adminId;
-    }
-
-    public void setAdminId(Long adminId) {
-        this.adminId = adminId;
-    }
-
-    public List<Category> getCategories() {
-        return categories;
-    }
-
-    public void setCategories(List<Category> categories) {
-        this.categories = categories;
-    }
+    public List<Category> getCategories() { return categories; }
+    public void setCategories(List<Category> categories) { this.categories = categories; }
 
     public String getPhotoUrl() { return photoUrl; }
     public void setPhotoUrl(String photoUrl) { this.photoUrl = photoUrl; }

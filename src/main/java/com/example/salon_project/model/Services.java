@@ -9,10 +9,11 @@ public class Services {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "category_id")
-    private Long categoryId;
+    @ManyToOne
+    @JoinColumn(name = "category_id", nullable = false) // Устанавливаем связь с Category
+    private Category category;
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private String name;
 
     @Column(name = "duration")
@@ -22,43 +23,18 @@ public class Services {
     private Double price;
 
     // Getters и Setters
-    public Long getId() {
-        return id;
-    }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public Category getCategory() { return category; }
+    public void setCategory(Category category) { this.category = category; }
 
-    public Long getCategoryId() {
-        return categoryId;
-    }
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
 
-    public void setCategoryId(Long categoryId) {
-        this.categoryId = categoryId;
-    }
+    public String getDuration() { return duration; }
+    public void setDuration(String duration) { this.duration = duration; }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDuration() {
-        return duration;
-    }
-
-    public void setDuration(String duration) {
-        this.duration = duration;
-    }
-
-    public Double getPrice() {
-        return price;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
-    }
+    public Double getPrice() { return price; }
+    public void setPrice(Double price) { this.price = price; }
 }

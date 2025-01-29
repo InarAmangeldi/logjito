@@ -17,10 +17,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Controller
 public class SalonController {
@@ -54,8 +53,8 @@ public class SalonController {
     public ResponseEntity<String> saveSalonWithDetails(
             @RequestParam("name") String name,
             @RequestParam("info") String info,
-            @RequestParam("photo") MultipartFile photo, // Теперь одно изображение
-            @RequestParam Map<String, String> categories,
+            @RequestParam("photo") MultipartFile photo,
+            @RequestParam Map<String, String> params,
             HttpSession session
     ) {
         try {
@@ -70,25 +69,80 @@ public class SalonController {
                         .body("Ошибка: Вы уже создали салон. Пожалуйста, отредактируйте существующий салон.");
             }
 
-            // Сохраняем салон
+            // Создаем новый объект салона
             Salon salon = new Salon();
             salon.setName(name);
             salon.setInfo(info);
             salon.setAdminId(adminId);
 
-            // Обрабатываем загрузку фото
+            // Сохраняем фото
             if (!photo.isEmpty()) {
+                String uploadDir = "src/main/resources/static/uploads/";
+                Path uploadPath = Paths.get(uploadDir);
+                if (!Files.exists(uploadPath)) {
+                    Files.createDirectories(uploadPath);
+                }
+
                 String fileName = UUID.randomUUID() + "_" + photo.getOriginalFilename();
-                Path filePath = Paths.get(System.getProperty("user.dir") + "/uploads/" + fileName);
-                Files.createDirectories(filePath.getParent());
+                Path filePath = uploadPath.resolve(fileName);
                 Files.write(filePath, photo.getBytes());
 
-                salon.setPhotoUrl("/uploads/" + fileName); // Сохраняем URL фото
+                salon.setPhotoUrl("/uploads/" + fileName);
             }
 
+            // Сохраняем салон в базу
             Salon savedSalon = salonService.saveSalon(salon);
 
-            // Логика обработки категорий и услуг остается такой же
+            // Обрабатываем категории
+            Map<Integer, Category> categoryMap = new HashMap<>();
+
+            for (String key : params.keySet()) {
+                if (key.matches("categories\\[\\d+\\]\\.name")) {
+                    int categoryIndex = Integer.parseInt(key.replaceAll("\\D", ""));
+                    Category category = new Category();
+                    category.setName(params.get(key));
+                    category.setSalon(savedSalon); // Устанавливаем связь с салоном
+                    category = categoryService.saveCategory(category); // Сохраняем и обновляем объект
+                    categoryMap.put(categoryIndex, category);
+                }
+            }
+
+            // Обрабатываем услуги
+            for (String key : params.keySet()) {
+                if (key.matches("categories\\[\\d+\\]\\.services\\[\\d+\\]\\.name")) {
+                    // Извлекаем индексы категории и услуги
+                    Matcher matcher = Pattern.compile("categories\\[(\\d+)]\\.services\\[(\\d+)]\\.name").matcher(key);
+                    if (matcher.find()) {
+                        int categoryIndex = Integer.parseInt(matcher.group(1));
+                        int serviceIndex = Integer.parseInt(matcher.group(2));
+
+                        Category category = categoryMap.get(categoryIndex);
+                        if (category != null) {
+                            Services service = new Services();
+                            service.setName(params.get(key));
+                            service.setCategory(category); // Привязываем к категории
+
+                            // Устанавливаем дополнительные параметры услуги
+                            String durationKey = key.replace(".name", ".duration");
+                            String priceKey = key.replace(".name", ".price");
+
+                            if (params.containsKey(durationKey)) {
+                                service.setDuration(params.get(durationKey));
+                            }
+                            if (params.containsKey(priceKey)) {
+                                try {
+                                    service.setPrice(Double.parseDouble(params.get(priceKey)));
+                                } catch (NumberFormatException e) {
+                                    System.out.println("Ошибка парсинга цены: " + params.get(priceKey));
+                                }
+                            }
+
+                            // Сохраняем услугу
+                            servicesService.saveService(service);
+                        }
+                    }
+                }
+            }
 
             return ResponseEntity.ok("Данные успешно сохранены!");
         } catch (Exception e) {
@@ -97,6 +151,9 @@ public class SalonController {
                     .body("Ошибка при сохранении данных: " + e.getMessage());
         }
     }
+
+
+
 
 
 

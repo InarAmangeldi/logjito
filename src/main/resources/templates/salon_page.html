@@ -197,6 +197,16 @@
             .modal-content button:hover {
                 background-color: #9149a5;
             }
+
+        .salon-main-image {
+    width: 300px; /* Ширина фото */
+    height: 200px; /* Высота фото */
+    object-fit: cover; /* Подгонка фото без искажений */
+    border-radius: 10px; /* Закругленные углы */
+    display: block;
+    margin: 0 auto; /* Центрируем изображение */
+}
+
     </style>
 </head>
 <body>
@@ -220,7 +230,8 @@
 <div class="container">
     <div class="carousel-container">
         <div class="carousel">
-            <img th:src="${salon.photos[0]?.photoUrl ?: '/uploads/placeholder.jpg'}" alt="Фото салона" id="salon-image">
+            <img th:src="@{${salon.photoUrl != null ? salon.photoUrl : '/images/placeholder.jpg'}}"
+                 alt="Фото салона" class="salon-image">
         </div>
 
     </div>
@@ -237,6 +248,7 @@
                 <ul>
                     <li th:each="service : ${category.services}">
                         <span th:text="${service.name}">Название услуги</span> -
+                        <span th:text="${service.duration}">Длительность</span> -
                         <span th:text="${service.price}">Цена услуги</span>₸
                     </li>
                 </ul>
@@ -283,6 +295,15 @@
 
 
 <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      let images = document.querySelectorAll(".salon-image");
+
+      images.forEach(img => {
+          img.onerror = function() {
+              this.src = "/images/placeholder.jpg"; // Если фото не загружается, ставим заглушку
+          };
+      });
+  });
     function setImage(imgElement) {
         const mainImage = document.getElementById('salon-image');
         mainImage.src = imgElement.src;
