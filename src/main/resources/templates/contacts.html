@@ -192,7 +192,7 @@
 
   <div class="contact-form">
     <h2>Свяжитесь с нами</h2>
-    <form action="#" method="post">
+    <form id="contact-form">
       <label for="name">Имя</label>
       <input type="text" id="name" name="name" placeholder="Ваше имя">
 
@@ -204,6 +204,7 @@
 
       <button type="submit">Отправить сообщение</button>
     </form>
+
   </div>
 </div>
 
@@ -212,5 +213,22 @@
 <footer>
   <p>logjito &copy; 2024. Все права защищены.</p>
 </footer>
+
+<script>
+  document.getElementById("contact-form").addEventListener("submit", function(event) {
+      event.preventDefault(); // Отменяем стандартную отправку формы
+
+      // Получаем данные формы
+      let name = document.getElementById("name").value.trim();
+      let email = document.getElementById("email").value.trim();
+      let message = document.getElementById("message").value.trim();
+
+      // Формируем почтовую ссылку
+      let mailtoLink = `mailto:wandik6537@gmail.com?subject=Сообщение от ${encodeURIComponent(name)}&body=Имя: ${encodeURIComponent(name)}%0AEmail: ${encodeURIComponent(email)}%0A%0A${encodeURIComponent(message)}`;
+
+      // Открываем почтовый клиент
+      window.location.href = mailtoLink;
+  });
+</script>
 </body>
 </html>
