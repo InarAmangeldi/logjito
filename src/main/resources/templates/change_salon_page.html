@@ -135,6 +135,72 @@
         left: 5px;
         top: 5px;
     }
+
+    .photo-upload-section {
+      background: #fff;
+      border: 2px dashed #ccc;
+      border-radius: 10px;
+      width: 300px;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .photo-upload-section h3 {
+      margin-bottom: 15px;
+      color: #333;
+      font-weight: normal;
+    }
+
+    .upload-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    /* Контейнер для иконки */
+    .icon-button {
+      width: 50px;
+      height: 50px;
+      display: inline-block;
+      background: url("images/plus-icon.png") center/contain no-repeat;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+    .icon-button:hover {
+      transform: scale(1.05);
+    }
+
+    /* Превью (небольшой размер) */
+    .thumbnail-container {
+      width: 80px;
+      height: 80px;
+      border: 2px solid #ccc;
+      border-radius: 6px;
+      overflow: hidden;
+      background: #fafafa;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .thumbnail-container img {
+      max-width: 50%;
+      max-height: 50%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* Скрытый input */
+    #fileImage {
+      display: none;
+    }
+
+    /* Сообщение об ошибке (пример) */
+    #imageError {
+      color: red;
+      font-size: 14px;
+      margin-top: 10px;
     }
   </style>
 </head>
@@ -153,15 +219,32 @@
       <textarea id="info" name="info" required></textarea>
     </div>
 
-    <!-- Загрузка фотографий -->
     <div class="photo-upload-section">
-      <h3>Загрузить фотографии</h3>
-      <div id="photoContainer">
-        <div class="photo-box">
-          <input type="file" name="photos" accept="image/*" multiple>
+      <h3>Загрузить фотографию</h3>
+      <div class="upload-container">
+
+        <!-- Кнопка (иконка) для выбора файла -->
+        <!-- for="fileImage" позволяет кликать по самой иконке -->
+        <label class="icon-button" for="fileImage"></label>
+
+        <!-- Превью (по умолчанию - плейсхолдер)-->
+        <div class="thumbnail-container">
+          <img
+                  id="thumbnail"
+                  src="images/placeholder.jpg"
+                  alt=""
+          />
         </div>
       </div>
+      <input type="file" id="fileImage" name="photo" accept="image/jpeg, image/png"
+      />
+
+      <!-- Сообщение об ошибке (скрыто) -->
+      <p id="imageError" hidden>Файл слишком большой (макс. 1 МБ)</p>
     </div>
+
+
+
 
     <!-- Добавление категорий и услуг -->
     <div class="category-section">
@@ -259,6 +342,28 @@
   document.querySelectorAll('.remove-service').forEach(button => {
     button.addEventListener('click', removeService);
   });
+
+  document.getElementById('fileImage').addEventListener('change', function(event) {
+      const file = event.target.files[0];
+      const reader = new FileReader();
+      const imageError = document.getElementById('imageError');
+      const thumbnail = document.getElementById('thumbnail');
+
+      // Проверяем размер файла
+      if (file && file.size > 1048576) { // 1MB
+          imageError.style.display = "block";
+          thumbnail.src = "images/placeholder.jpg"; // Если фото больше 1Мб, сбрасываем на стандартное
+          return;
+      }
+
+      // Если размер ок, показываем фото
+      imageError.style.display = "none";
+      reader.onload = function(e) {
+          thumbnail.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+  });
+
 </script>
 
 </body>

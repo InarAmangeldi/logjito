@@ -21,8 +21,8 @@ public class Salon {
     @OneToMany(mappedBy = "salon", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Category> categories;
 
-    @OneToMany(mappedBy = "salon", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Photo> photos;
+    @Column(name = "photo_url")
+    private String photoUrl;
 
     // Getters и Setters
     public Long getId() {
@@ -65,11 +65,6 @@ public class Salon {
         this.categories = categories;
     }
 
-    public List<Photo> getPhotos() {
-        return photos;
-    }
-
-    public void setPhotos(List<Photo> photos) {
-        this.photos = photos;
-    }
+    public String getPhotoUrl() { return photoUrl; }
+    public void setPhotoUrl(String photoUrl) { this.photoUrl = photoUrl; }
 }
