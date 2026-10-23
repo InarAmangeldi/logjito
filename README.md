@@ -6,7 +6,7 @@
 
 ### Стек технологий
 * **Язык:** Java 17+ (или ваша версия)
-* **Фреймворк / Библиотеки:** Spring Boot / Hibernate (JPA) *(или Java Core / Swing / JavaFX)*
+* **Фреймворк / Библиотеки:** Spring Boot / Hibernate (JPA)
 * **База данных:** PostgreSQL / MySQL
 * **Сборщик:** Maven / Gradle
 
